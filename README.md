@@ -1,9 +1,12 @@
 # MailSync 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-green.svg)](https://nodejs.org/)
+[![GitHub stars](https://img.shields.io/github/stars/Harshit-Maurya838/MailSync?style=social)](https://github.com/Harshit-Maurya838/MailSync)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start)
+
+> ⭐ **Support the Project:** If you like or use MailSync, please consider [giving the repo a star on GitHub](https://github.com/Harshit-Maurya838/MailSync) — it helps keep the project active and maintained!
 
 **MailSync** is a lightweight, open-source, self-hosted email-sending API built with Node.js, Express, and [Nodemailer](https://nodemailer.com/). It allows anyone to deploy a private, serverless email API to **Vercel**, **Netlify**, **Docker**, or any VPS in less than 60 seconds.
 

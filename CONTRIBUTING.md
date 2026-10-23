@@ -1,4 +1,4 @@
-# Contributing to MailSync ⚡
+# Contributing to MailSync
 
 Thank you for your interest in contributing to **MailSync**! We welcome all contributions from developers of all skill levels—whether you're fixing a bug, adding new email templates, improving documentation, or optimizing deployment adapters.
 

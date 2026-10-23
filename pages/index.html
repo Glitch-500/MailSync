@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MailSync - Self-Hosted Email-Sending API</title>
-  <meta name="description" content="Open-source, self-hosted email sending API for Vercel, Netlify, and Docker using Nodemailer." />
+  <meta name="description"
+    content="Open-source, self-hosted email sending API for Vercel, Netlify, and Docker using Nodemailer." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --bg: #0b0f19;
@@ -38,7 +42,7 @@
 
     body {
       background-color: var(--bg);
-      background-image: 
+      background-image:
         radial-gradient(ellipse 60% 40% at 20% -10%, rgba(99, 102, 241, 0.15), transparent 70%),
         radial-gradient(ellipse 50% 30% at 85% 15%, rgba(168, 85, 247, 0.12), transparent 60%),
         radial-gradient(ellipse 70% 40% at 50% 100%, rgba(6, 182, 212, 0.08), transparent 70%);
@@ -138,8 +142,17 @@
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+      }
     }
 
     /* Buttons */
@@ -339,7 +352,8 @@
       padding: 24px;
       backdrop-filter: blur(16px);
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-      min-width: 0; /* CRITICAL for CSS Grid children */
+      min-width: 0;
+      /* CRITICAL for CSS Grid children */
     }
 
     .card-header {
@@ -414,7 +428,8 @@
       color: #f87171;
     }
 
-    .form-input, .form-textarea {
+    .form-input,
+    .form-textarea {
       width: 100%;
       background: rgba(8, 13, 26, 0.85);
       border: 1px solid var(--card-border);
@@ -427,7 +442,8 @@
       box-sizing: border-box;
     }
 
-    .form-input:focus, .form-textarea:focus {
+    .form-input:focus,
+    .form-textarea:focus {
       outline: none;
       border-color: var(--accent);
       background: rgba(13, 19, 36, 0.95);
@@ -453,8 +469,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .response-banner.success {
@@ -543,7 +566,8 @@
       color: #e2e8f0;
       overflow-x: auto;
       max-height: 250px;
-      min-width: 0; /* CRITICAL */
+      min-width: 0;
+      /* CRITICAL */
     }
 
     .code-container pre {
@@ -713,6 +737,7 @@
     }
   </style>
 </head>
+
 <body>
   <!-- Top Navigation -->
   <nav class="navbar">
@@ -732,9 +757,10 @@
           <button class="btn-secondary" id="verifyBtn" onclick="verifyConnection()">
             Test Transporter
           </button>
-          <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank" class="btn-secondary" style="gap: 6px; padding: 7px 12px; font-size: 12px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
+          <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank" class="btn-secondary"
+            style="gap: 6px; padding: 7px 14px; font-size: 12px; border-color: rgba(234, 179, 8, 0.4); color: #fef08a; background: rgba(234, 179, 8, 0.08);">
+            <span>⭐</span>
+            <span>Star on GitHub</span>
           </a>
         </div>
       </div>
@@ -745,14 +771,16 @@
     <!-- Hero Header -->
     <header class="hero">
       <div class="hero-badge">
-        <span>⚡ Open-source &bull; Self-Hosted &bull; Vercel &bull; Netlify &bull; Docker</span>
+        <span> Open-source &bull; Self-Hosted &bull; Vercel &bull; Netlify &bull; Docker</span>
       </div>
       <h1 class="hero-title">
         The Minimalist Email API<br />
         <span>For Developers.</span>
       </h1>
       <p class="hero-subtitle">
-        Deploy your own private email service in under 60 seconds. Send transactional emails via standard HTTP POST calls to <code style="color: #a5b4fc; background: rgba(99, 102, 241, 0.12); padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;">/mail</code>.
+        Deploy your own private email service in under 60 seconds. Send transactional emails via standard HTTP POST
+        calls to <code
+          style="color: #a5b4fc; background: rgba(99, 102, 241, 0.12); padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;">/mail</code>.
       </p>
     </header>
 
@@ -811,14 +839,16 @@
               <label class="form-label" for="testEmail">
                 Recipient Email <span class="req">*</span>
               </label>
-              <input type="email" id="testEmail" class="form-input" placeholder="user@example.com" required oninput="updateCodePreview()" />
+              <input type="email" id="testEmail" class="form-input" placeholder="user@example.com" required
+                oninput="updateCodePreview()" />
             </div>
 
             <div class="form-group">
               <label class="form-label" for="testName">
                 Recipient Name
               </label>
-              <input type="text" id="testName" class="form-input" placeholder="Alex Rivers" oninput="updateCodePreview()" />
+              <input type="text" id="testName" class="form-input" placeholder="Alex Rivers"
+                oninput="updateCodePreview()" />
             </div>
           </div>
 
@@ -827,12 +857,14 @@
               <label class="form-label" for="testFromName">
                 Sender Name (From Name)
               </label>
-              <input type="text" id="testFromName" class="form-input" placeholder="MailSync (or your brand)" oninput="updateCodePreview()" />
+              <input type="text" id="testFromName" class="form-input" placeholder="MailSync (or your brand)"
+                oninput="updateCodePreview()" />
             </div>
 
             <div class="form-group">
               <label class="form-label" for="testSubject">Subject Line</label>
-              <input type="text" id="testSubject" class="form-input" placeholder="Welcome to our platform!" oninput="updateCodePreview()" />
+              <input type="text" id="testSubject" class="form-input" placeholder="Welcome to our platform!"
+                oninput="updateCodePreview()" />
             </div>
           </div>
 
@@ -840,14 +872,16 @@
             <label class="form-label" for="testMessage">
               Message Content <span class="req">*</span>
             </label>
-            <textarea id="testMessage" class="form-textarea" placeholder="Enter message text..." required oninput="updateCodePreview()">Hello! This is a test email sent directly from the MailSync interactive dashboard.</textarea>
+            <textarea id="testMessage" class="form-textarea" placeholder="Enter message text..." required
+              oninput="updateCodePreview()">Hello! This is a test email sent directly from the MailSync interactive dashboard.</textarea>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="testApiKey">
               Access Key (optional if not set in .env)
             </label>
-            <input type="password" id="testApiKey" class="form-input" placeholder="Enter ACCESS_KEY header if required" oninput="updateCodePreview()" />
+            <input type="password" id="testApiKey" class="form-input" placeholder="Enter ACCESS_KEY header if required"
+              oninput="updateCodePreview()" />
           </div>
 
           <button type="submit" class="btn-primary" id="sendBtn">
@@ -886,7 +920,8 @@
 
         <div class="terminal-header">
           <div class="terminal-title">
-            <span>🖥️</span> Live Server Logs (<a href="/logs" target="_blank" style="color: #818cf8; text-decoration: none;">/logs</a>)
+            <span>🖥️</span> Live Server Logs (<a href="/logs" target="_blank"
+              style="color: #818cf8; text-decoration: none;">/logs</a>)
           </div>
           <button class="copy-btn" onclick="refreshLogs()" style="font-size: 11px; padding: 2px 8px;">Refresh</button>
         </div>
@@ -941,7 +976,8 @@
                 <td><code>fromName</code></td>
                 <td>String</td>
                 <td>No</td>
-                <td>Custom sender/from name (e.g. <code>"Acme Support"</code>). Overrides the <code>FROM_NAME</code> environment variable.</td>
+                <td>Custom sender/from name (e.g. <code>"Acme Support"</code>). Overrides the <code>FROM_NAME</code>
+                  environment variable.</td>
               </tr>
               <tr>
                 <td><code>from</code></td>
@@ -957,9 +993,16 @@
               </tr>
             </tbody>
           </table>
-          <div style="padding: 12px 16px; background: rgba(99, 102, 241, 0.08); border-top: 1px solid var(--card-border); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
-            <span>🛡️</span>
-            <span><strong>Open Source Watermark:</strong> All outgoing emails include a footer badge indicating they are powered by the open-source MailSync project.</span>
+          <div
+            style="padding: 12px 16px; background: rgba(99, 102, 241, 0.08); border-top: 1px solid var(--card-border); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>🛡️</span>
+              <span><strong>Open Source Watermark:</strong> All outgoing emails include a footer badge indicating they
+                are powered by the open-source MailSync project.</span>
+            </div>
+            <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank"
+              style="color: #fef08a; text-decoration: none; font-size: 11.5px; font-weight: 700;">⭐ Star MailSync on
+              GitHub &rarr;</a>
           </div>
         </div>
       </div>
@@ -969,7 +1012,8 @@
     <section style="margin-bottom: 45px;">
       <div class="section-header">
         <h2 class="section-title">Deploy in 1 Click</h2>
-        <p class="section-subtitle">Fork and launch your own private instance for free on your favorite cloud provider.</p>
+        <p class="section-subtitle">Fork and launch your own private instance for free on your favorite cloud provider.
+        </p>
       </div>
 
       <div class="deploy-grid">
@@ -977,11 +1021,14 @@
         <div class="deploy-card">
           <div>
             <h3 class="deploy-card-title">
-              <svg width="18" height="18" viewBox="0 0 115 100" fill="#fff"><path d="M57.5 0L115 100H0L57.5 0Z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 115 100" fill="#fff">
+                <path d="M57.5 0L115 100H0L57.5 0Z" />
+              </svg>
               Vercel Deployment
             </h3>
             <p class="deploy-card-desc">
-              Deploy to Vercel Serverless Functions with zero extra setup. Uses native Node.js runtime and routes all requests seamlessly.
+              Deploy to Vercel Serverless Functions with zero extra setup. Uses native Node.js runtime and routes all
+              requests seamlessly.
             </p>
           </div>
           <a href="https://vercel.com/new" target="_blank" class="btn-secondary" style="width: 100%;">
@@ -993,11 +1040,15 @@
         <div class="deploy-card">
           <div>
             <h3 class="deploy-card-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="#00C7B7"><path d="M16.92 8.42l-2.73-2.73L12 7.88l2.73 2.73 2.19-2.19zm-5.46 5.46L8.73 11.15 6 13.88l2.73 2.73 2.73-2.73z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#00C7B7">
+                <path
+                  d="M16.92 8.42l-2.73-2.73L12 7.88l2.73 2.73 2.19-2.19zm-5.46 5.46L8.73 11.15 6 13.88l2.73 2.73 2.73-2.73z" />
+              </svg>
               Netlify Deployment
             </h3>
             <p class="deploy-card-desc">
-              Pre-configured with <code style="color: #a5b4fc;">netlify.toml</code> and serverless-http function adapter. Works out of the box.
+              Pre-configured with <code style="color: #a5b4fc;">netlify.toml</code> and serverless-http function
+              adapter. Works out of the box.
             </p>
           </div>
           <a href="https://app.netlify.com/start" target="_blank" class="btn-secondary" style="width: 100%;">
@@ -1009,14 +1060,19 @@
         <div class="deploy-card">
           <div>
             <h3 class="deploy-card-title">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="#2496ED"><path d="M13.98 11.08h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm-2.88 0h2.08v1.94H5.33zm11.53-2.68h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H13.98zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm8.65-2.68h2.08v1.94h-2.08z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#2496ED">
+                <path
+                  d="M13.98 11.08h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm-2.88 0h2.08v1.94H5.33zm11.53-2.68h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H13.98zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm8.65-2.68h2.08v1.94h-2.08z" />
+              </svg>
               Docker / Self-Host
             </h3>
             <p class="deploy-card-desc">
-              Run on Coolify, Railway, Render, or any VPS using Docker or docker-compose with pre-built production recipes.
+              Run on Coolify, Railway, Render, or any VPS using Docker or docker-compose with pre-built production
+              recipes.
             </p>
           </div>
-          <code style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; display: block; background: #050811; padding: 9px; border-radius: 6px; border: 1px solid var(--card-border); color: #cbd5e1;">docker compose up -d</code>
+          <code
+            style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; display: block; background: #050811; padding: 9px; border-radius: 6px; border: 1px solid var(--card-border); color: #cbd5e1;">docker compose up -d</code>
         </div>
       </div>
     </section>
@@ -1024,12 +1080,14 @@
     <!-- Footer -->
     <footer>
       <p>
-        <strong>MailSync</strong> &bull; Open-source, self-hosted email sending API. Built with <a href="https://nodemailer.com" target="_blank">Nodemailer</a> and Express.
+        <strong>MailSync</strong> &bull; Open-source, self-hosted email sending API. Built with <a
+          href="https://nodemailer.com" target="_blank">Nodemailer</a> and Express.
       </p>
       <p style="margin-top: 6px;">
         Released under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a> &bull;
         <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank">GitHub Repository</a> &bull;
-        <a href="https://github.com/Harshit-Maurya838/MailSync/blob/main/CONTRIBUTING.md" target="_blank">Contributing Guide</a>
+        <a href="https://github.com/Harshit-Maurya838/MailSync/blob/main/CONTRIBUTING.md" target="_blank">Contributing
+          Guide</a>
       </p>
     </footer>
   </main>
@@ -1231,4 +1289,5 @@ print(response.json())`;
     });
   </script>
 </body>
+
 </html>
