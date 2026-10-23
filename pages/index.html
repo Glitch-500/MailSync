@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MailSync - Self-Hosted Email-Sending API</title>
+  <meta name="description" content="Open-source, self-hosted email sending API for Vercel, Netlify, and Docker using Nodemailer." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(255, 255, 255, 0.12);
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --cyan-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code-bg: #0d111a;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.85);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .version-tag {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 10px var(--success);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 70px 0 45px 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #c7d2fe;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .hero-title span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 36px auto;
+    }
+
+    /* Stats Grid */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--card-hover);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Main Section: Playground */
+    .playground-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 70px;
+    }
+
+    @media (max-width: 900px) {
+      .playground-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-label span.req {
+      color: var(--danger);
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      background: rgba(13, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 13px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+      width: 100%;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 11px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--card-hover);
+    }
+
+    /* Code Preview & Tabs */
+    .tabs-header {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--text-main);
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .code-box {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      position: relative;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: #e2e8f0;
+      overflow-x: auto;
+      max-height: 380px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+    }
+
+    /* Response Banner */
+    .response-area {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      display: none;
+    }
+
+    .response-area.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #6ee7b7;
+    }
+
+    .response-area.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    /* Documentation Section */
+    .section-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .api-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .api-table th {
+      text-align: left;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 600;
+    }
+
+    .api-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+
+    .badge-method {
+      background: #0284c7;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Deployment Guides */
+    .deploy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 70px;
+    }
+
+    .deploy-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .deploy-card:hover {
+      border-color: var(--card-hover);
+      transform: translateY(-2px);
+    }
+
+    .deploy-card-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .deploy-card-desc {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin-bottom: 18px;
+    }
+
+    /* Logs Terminal Box */
+    .terminal-box {
+      background: #05080f;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #94a3b8;
+      max-height: 240px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <a href="/" class="brand" id="navBrand">
+        <img src="/logo.svg" alt="MailSync Logo" class="brand-logo" />
+        <span class="brand-name">MailSync</span>
+        <span class="version-tag">v1.0.0</span>
+      </a>
+
+      <div class="nav-actions">
+        <div class="status-badge" id="systemStatusBadge">
+          <div class="status-dot"></div>
+          <span id="systemStatusText">Operational</span>
+        </div>
+        <button class="btn-secondary" id="verifyBtn" onclick="verifyConnection()" style="font-size: 12px; padding: 6px 12px;">
+          Test Transporter
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Hero Header -->
+    <header class="hero">
+      <div class="hero-badge">
+        <span>⚡ Open-source &bull; Self-Hosted &bull; Vercel &bull; Netlify &bull; Docker</span>
+      </div>
+      <h1 class="hero-title">
+        The Minimalist Email API<br />
+        <span>For Developers.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Deploy your own private email-sending service in under 60 seconds. Send transactional emails via standard HTTP POST calls to <code style="color: #a5b4fc; background: rgba(99, 102, 241, 0.1); padding: 2px 6px; border-radius: 4px;">/mail</code>.
+      </p>
+    </header>
+
+    <!-- Metrics Bar -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Service Status</div>
+        <div class="stat-value" id="statStatus">
+          <span style="color: var(--success); font-size: 18px;">● Active</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Server Uptime</div>
+        <div class="stat-value" id="statUptime">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Emails Dispatched</div>
+        <div class="stat-value" id="statMailHits">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Authentication</div>
+        <div class="stat-value" id="statAuth" style="font-size: 16px;">Checking...</div>
+      </div>
+    </div>
+
+    <!-- Playground Section -->
+    <section class="playground-grid">
+      <!-- Left: Interactive Form -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span>✉️</span> Interactive Email Tester
+          </h2>
+          <span style="font-size: 12px; color: var(--text-dim);">POST /mail</span>
+        </div>
+
+        <form id="mailForm" onsubmit="handleSendTestMail(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="testEmail">Recipient Email <span class="req">*</span></label>
+              <input type="email" id="testEmail" class="form-input" placeholder="user@example.com" required oninput="updateCodePreview()" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="testName">Recipient Name</label>
+              <input type="text" id="testName" class="form-input" placeholder="Alex Rivers" oninput="updateCodePreview()" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="testSubject">Subject Line</label>
+            <input type="text" id="testSubject" class="form-input" placeholder="Welcome to our platform!" oninput="updateCodePreview()" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="testMessage">Message Content <span class="req">*</span></label>
+            <textarea id="testMessage" class="form-textarea" placeholder="Hello! We are thrilled to welcome you. Your verification code is 492041." required oninput="updateCodePreview()">Hello! This is a test email sent directly from the MailSync interactive dashboard.</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="testApiKey">
+              Access Key (optional if not configured in .env)
+            </label>
+            <input type="password" id="testApiKey" class="form-input" placeholder="Enter ACCESS_KEY header if required" oninput="updateCodePreview()" />
+          </div>
+
+          <button type="submit" class="btn-primary" id="sendBtn">
+            <span id="sendBtnText">Send Email via /mail</span>
+          </button>
+
+          <div id="responseBox" class="response-area"></div>
+        </form>
+      </div>
+
+      <!-- Right: Real-Time Code Preview & Snippets -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span>💻</span> Real-time Request Snippet
+          </h2>
+          <span style="font-size: 12px; color: var(--text-dim);">Copy & Paste</span>
+        </div>
+
+        <div class="tabs-header">
+          <button class="tab-btn active" id="tabCurl" onclick="switchTab('curl')">cURL</button>
+          <button class="tab-btn" id="tabJs" onclick="switchTab('js')">JavaScript (Fetch)</button>
+          <button class="tab-btn" id="tabPy" onclick="switchTab('py')">Python</button>
+          <button class="tab-btn" id="tabJson" onclick="switchTab('json')">JSON Payload</button>
+        </div>
+
+        <div class="code-box">
+          <button class="copy-btn" id="copyCodeBtn" onclick="copySnippet()">Copy</button>
+          <pre id="codeSnippet"></pre>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">
+            Live Server Logs (<a href="/logs" target="_blank" style="color: #818cf8; text-decoration: none;">/logs</a>)
+          </h3>
+          <div class="terminal-box" id="logsViewer">Loading server logs...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Reference Section -->
+    <section style="margin-bottom: 70px;">
+      <h2 class="section-title">API Reference</h2>
+      <p class="section-subtitle">Send emails simply by issuing a standard HTTP request with a JSON body.</p>
+
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div style="padding: 16px 20px; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; gap: 12px;">
+          <span class="badge-method">POST</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;">/mail</span>
+          <span style="color: var(--text-dim); font-size: 13px;">(Also available at <code style="color: #a5b4fc;">/api/mail</code>)</span>
+        </div>
+
+        <div style="padding: 24px;">
+          <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--text-muted);">Request Body (application/json)</h4>
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>email</code> or <code>to</code></td>
+                <td>String</td>
+                <td><span style="color: var(--danger); font-weight: 600;">Yes</span></td>
+                <td>Recipient email address (e.g. <code>user@example.com</code>).</td>
+              </tr>
+              <tr>
+                <td><code>message</code></td>
+                <td>String</td>
+                <td><span style="color: var(--danger); font-weight: 600;">Yes*</span></td>
+                <td>Plaintext message body (automatically wrapped in a responsive HTML layout).</td>
+              </tr>
+              <tr>
+                <td><code>subject</code></td>
+                <td>String</td>
+                <td>No</td>
+                <td>Email subject line (defaults to "New Notification from MailSync").</td>
+              </tr>
+              <tr>
+                <td><code>name</code></td>
+                <td>String</td>
+                <td>No</td>
+                <td>Recipient name for personalized greeting in the email body.</td>
+              </tr>
+              <tr>
+                <td><code>html</code></td>
+                <td>String</td>
+                <td>No</td>
+                <td>Custom HTML body if you wish to bypass automatic templating.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size: 14px; margin-top: 20px; margin-bottom: 8px; color: var(--text-muted);">Security Headers</h4>
+          <p style="font-size: 13.5px; color: var(--text-dim);">
+            If <code>ACCESS_KEY</code> is defined in your environment, pass it via header:
+            <code style="color: #a5b4fc; background: rgba(255, 255, 255, 0.05); padding: 2px 6px; border-radius: 4px;">x-access-key: YOUR_KEY</code> or
+            <code style="color: #a5b4fc; background: rgba(255, 255, 255, 0.05); padding: 2px 6px; border-radius: 4px;">Authorization: Bearer YOUR_KEY</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1-Click Deployment Section -->
+    <section style="margin-bottom: 70px;">
+      <h2 class="section-title">Deploy in 1 Click</h2>
+      <p class="section-subtitle">Fork and launch your own private instance for free on your favorite cloud provider.</p>
+
+      <div class="deploy-grid">
+        <!-- Vercel -->
+        <div class="deploy-card">
+          <h3 class="deploy-card-title">
+            <svg width="20" height="20" viewBox="0 0 115 100" fill="#fff"><path d="M57.5 0L115 100H0L57.5 0Z"/></svg>
+            Vercel Deployment
+          </h3>
+          <p class="deploy-card-desc">
+            Deploy to Vercel Serverless Functions with zero extra setup. Uses native Node.js runtime and routes all requests seamlessly.
+          </p>
+          <a href="https://vercel.com/new" target="_blank" class="btn-secondary" style="width: 100%; text-decoration: none;">
+            Deploy to Vercel &rarr;
+          </a>
+        </div>
+
+        <!-- Netlify -->
+        <div class="deploy-card">
+          <h3 class="deploy-card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#00C7B7"><path d="M16.92 8.42l-2.73-2.73L12 7.88l2.73 2.73 2.19-2.19zm-5.46 5.46L8.73 11.15 6 13.88l2.73 2.73 2.73-2.73z"/></svg>
+            Netlify Deployment
+          </h3>
+          <p class="deploy-card-desc">
+            Pre-configured with <code style="color: #a5b4fc;">netlify.toml</code> and serverless-http function adapter. Works out of the box.
+          </p>
+          <a href="https://app.netlify.com/start" target="_blank" class="btn-secondary" style="width: 100%; text-decoration: none;">
+            Deploy to Netlify &rarr;
+          </a>
+        </div>
+
+        <!-- Docker -->
+        <div class="deploy-card">
+          <h3 class="deploy-card-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#2496ED"><path d="M13.98 11.08h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm-2.88 0h2.08v1.94H5.33zm11.53-2.68h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H13.98zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm8.65-2.68h2.08v1.94h-2.08z"/></svg>
+            Docker / Self-Host
+          </h3>
+          <p class="deploy-card-desc">
+            Run on Coolify, Railway, Render, or any VPS using Docker or docker-compose with pre-built production recipes.
+          </p>
+          <code style="font-family: 'JetBrains Mono', monospace; font-size: 12px; display: block; background: #05080f; padding: 10px; border-radius: 6px; border: 1px solid var(--card-border);">docker-compose up -d</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        <strong>MailSync</strong> &bull; Open-source, self-hosted email sending API. Built with <a href="https://nodemailer.com" target="_blank">Nodemailer</a> and Express.
+      </p>
+      <p style="margin-top: 8px;">
+        Released under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>. Free to fork and deploy.
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    let activeTab = 'curl';
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+      if (activeBtn) activeBtn.classList.add('active');
+      updateCodePreview();
+    }
+
+    function getFormData() {
+      return {
+        email: document.getElementById('testEmail').value || 'user@example.com',
+        name: document.getElementById('testName').value || 'Alex Rivers',
+        subject: document.getElementById('testSubject').value || 'Welcome to our platform!',
+        message: document.getElementById('testMessage').value || 'Hello! This is a test email sent from MailSync.',
+        apiKey: document.getElementById('testApiKey').value.trim()
+      };
+    }
+
+    function updateCodePreview() {
+      const data = getFormData();
+      const origin = window.location.origin || 'https://your-mailsync.vercel.app';
+      const snippetEl = document.getElementById('codeSnippet');
+
+      const payload = {
+        email: data.email,
+        name: data.name,
+        subject: data.subject,
+        message: data.message
+      };
+
+      const jsonString = JSON.stringify(payload, null, 2);
+
+      if (activeTab === 'curl') {
+        let authHeader = data.apiKey ? ` \\\n  -H "x-access-key: ${data.apiKey}"` : '';
+        snippetEl.innerText = `curl -X POST "${origin}/mail" \\
+  -H "Content-Type: application/json"${authHeader} \\
+  -d '${JSON.stringify(payload)}'`;
+      } else if (activeTab === 'js') {
+        const headers = { 'Content-Type': 'application/json' };
+        if (data.apiKey) headers['x-access-key'] = data.apiKey;
+        snippetEl.innerText = `const response = await fetch("${origin}/mail", {
+  method: "POST",
+  headers: ${JSON.stringify(headers, null, 2)},
+  body: JSON.stringify(${JSON.stringify(payload, null, 2)})
+});
+
+const result = await response.json();
+console.log(result);`;
+      } else if (activeTab === 'py') {
+        let pyHeaders = "{'Content-Type': 'application/json'}";
+        if (data.apiKey) pyHeaders = `{'Content-Type': 'application/json', 'x-access-key': '${data.apiKey}'}`;
+        snippetEl.innerText = `import requests
+
+url = "${origin}/mail"
+headers = ${pyHeaders}
+payload = ${JSON.stringify(payload, null, 2).replace(/true/g, 'True').replace(/false/g, 'False')}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())`;
+      } else if (activeTab === 'json') {
+        snippetEl.innerText = jsonString;
+      }
+    }
+
+    async function copySnippet() {
+      const codeText = document.getElementById('codeSnippet').innerText;
+      try {
+        await navigator.clipboard.writeText(codeText);
+        const copyBtn = document.getElementById('copyCodeBtn');
+        copyBtn.innerText = 'Copied!';
+        setTimeout(() => { copyBtn.innerText = 'Copy'; }, 2000);
+      } catch (e) {
+        console.error('Failed to copy', e);
+      }
+    }
+
+    async function handleSendTestMail(event) {
+      event.preventDefault();
+      const data = getFormData();
+      const sendBtn = document.getElementById('sendBtn');
+      const btnText = document.getElementById('sendBtnText');
+      const responseBox = document.getElementById('responseBox');
+
+      sendBtn.disabled = true;
+      btnText.innerText = 'Sending email...';
+      responseBox.className = 'response-area';
+      responseBox.style.display = 'none';
+
+      const headers = { 'Content-Type': 'application/json' };
+      if (data.apiKey) {
+        headers['x-access-key'] = data.apiKey;
+      }
+
+      try {
+        const res = await fetch('/mail', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({
+            email: data.email,
+            name: data.name,
+            subject: data.subject,
+            message: data.message
+          })
+        });
+
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+          responseBox.className = 'response-area success';
+          responseBox.innerHTML = `<strong>Success!</strong> ${json.message}<br><small style="color: #a7f3d0;">Message ID: ${json.messageId || 'sent'}</small>`;
+          refreshServerInfo();
+        } else {
+          responseBox.className = 'response-area error';
+          responseBox.innerHTML = `<strong>Error (${res.status}):</strong> ${json.error || 'Failed'}<br><small>${json.details || json.message || ''}</small>`;
+        }
+      } catch (err) {
+        responseBox.className = 'response-area error';
+        responseBox.innerHTML = `<strong>Network Error:</strong> ${err.message}`;
+      } finally {
+        sendBtn.disabled = false;
+        btnText.innerText = 'Send Email via /mail';
+        refreshLogs();
+      }
+    }
+
+    async function verifyConnection() {
+      const verifyBtn = document.getElementById('verifyBtn');
+      verifyBtn.innerText = 'Verifying...';
+      try {
+        const res = await fetch('/api/verify');
+        const json = await res.json();
+        if (res.ok && json.success) {
+          alert('Transporter verified successfully! Nodemailer is connected to your email provider.');
+        } else {
+          alert('Verification Failed:\n' + (json.details || json.error || 'Check server logs.'));
+        }
+      } catch (err) {
+        alert('Could not reach server: ' + err.message);
+      } finally {
+        verifyBtn.innerText = 'Test Transporter';
+      }
+    }
+
+    async function refreshServerInfo() {
+      try {
+        const res = await fetch('/server-info');
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('statUptime').innerText = data.uptime || '--';
+          document.getElementById('statMailHits').innerText = data.endpointHitCounts?.mail ?? 0;
+          document.getElementById('statAuth').innerText = data.authRequired ? '🔒 Key Protected' : '🔓 Public (Open)';
+          if (data.smtpConfigured) {
+            document.getElementById('systemStatusText').innerText = 'Ready to Send';
+          }
+        }
+      } catch (e) {
+        console.warn('Could not refresh server info', e);
+      }
+    }
+
+    async function refreshLogs() {
+      try {
+        const res = await fetch('/logs');
+        if (res.ok) {
+          const data = await res.json();
+          const viewer = document.getElementById('logsViewer');
+          if (data.logs && data.logs.length > 0) {
+            viewer.innerText = data.logs.slice(-15).join('\n');
+            viewer.scrollTop = viewer.scrollHeight;
+          } else {
+            viewer.innerText = 'No logs recorded yet. Requests will appear here in real-time.';
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch logs', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCodePreview();
+      refreshServerInfo();
+      refreshLogs();
+      setInterval(refreshServerInfo, 10000);
+    });
+  </script>
+</body>
+</html>
