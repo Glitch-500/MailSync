@@ -4,34 +4,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MailSync - Self-Hosted Email-Sending API</title>
+  <title>MailSync - High-Performance Self-Hosted Email API</title>
   <meta name="description"
-    content="Open-source, self-hosted email sending API for Vercel, Netlify, and Docker using Nodemailer." />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    content="Open-source, self-hosted email sending API for Vercel, Netlify, Docker, and Node.js. Lightweight, secure, and developer-friendly." />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <meta property="og:image" content="/logo.png" />
+
+  <!-- Modern Public-Attractive Fonts: Outfit (Display/Headings), Plus Jakarta Sans (UI/Body), JetBrains Mono (Code) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
+
   <style>
+    /* =========================================================
+       DESIGN SYSTEM & REALISTIC DEPTH TOKENS
+       ========================================================= */
     :root {
-      --bg: #0b0f19;
-      --card-bg: rgba(17, 24, 39, 0.75);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-hover: rgba(99, 102, 241, 0.25);
-      --accent: #6366f1;
-      --accent-hover: #4f46e5;
-      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-      --text-main: #f9fafb;
+      /* Surface & Palette */
+      --bg-deep: #07090e;
+      --bg-card: rgba(13, 17, 28, 0.78);
+      --bg-card-hover: rgba(18, 24, 38, 0.88);
+      --bg-card-glass: rgba(16, 22, 36, 0.65);
+      --bg-input: #090d18;
+      --bg-code: #050811;
+
+      /* Realistic Layered Borders */
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(255, 255, 255, 0.16);
+      --border-glow: rgba(99, 102, 241, 0.45);
+
+      /* Typography Colors - High Aesthetic & Public Attractive */
+      --text-hero: #ffffff;
+      --text-main: #f1f5f9;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
+      --text-glow: rgba(255, 255, 255, 0.9);
+
+      /* Accent & Brand Gradients */
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-cyan: #06b6d4;
+      --accent-purple: #a855f7;
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+      --accent-gradient-glow: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(168, 85, 247, 0.25) 50%, rgba(6, 182, 212, 0.2) 100%);
+      --fire-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+
+      /* Realistic Tactile Shadows */
+      --shadow-realistic:
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 1px 1px 0 rgba(255, 255, 255, 0.1) inset,
+        0 16px 40px -12px rgba(0, 0, 0, 0.65);
+
+      --shadow-card-hover:
+        0 0 0 1px rgba(99, 102, 241, 0.3),
+        0 1px 1px 0 rgba(255, 255, 255, 0.15) inset,
+        0 24px 60px -15px rgba(0, 0, 0, 0.75),
+        0 0 25px -5px rgba(99, 102, 241, 0.18);
+
+      --shadow-input:
+        inset 0 2px 4px rgba(0, 0, 0, 0.5),
+        0 1px 0 rgba(255, 255, 255, 0.04);
+
+      --shadow-btn:
+        0 4px 14px rgba(99, 102, 241, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+      /* Functional Accents */
       --success: #10b981;
-      --danger: #ef4444;
+      --success-glow: rgba(16, 185, 129, 0.3);
+      --danger: #f43f5e;
       --warning: #f59e0b;
-      --code-bg: #080d1a;
+      --info: #38bdf8;
+
+      /* Radii */
       --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
     }
 
     * {
@@ -41,41 +93,64 @@
     }
 
     body {
-      background-color: var(--bg);
+      background-color: var(--bg-deep);
       background-image:
-        radial-gradient(ellipse 60% 40% at 20% -10%, rgba(99, 102, 241, 0.15), transparent 70%),
-        radial-gradient(ellipse 50% 30% at 85% 15%, rgba(168, 85, 247, 0.12), transparent 60%),
-        radial-gradient(ellipse 70% 40% at 50% 100%, rgba(6, 182, 212, 0.08), transparent 70%);
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.18), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.14), transparent 40%),
+        radial-gradient(circle at 15% 35%, rgba(6, 182, 212, 0.12), transparent 42%),
+        radial-gradient(circle at 50% 100%, rgba(16, 185, 129, 0.08), transparent 50%);
       background-attachment: fixed;
       color: var(--text-main);
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.55;
+      line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 0 24px;
+    /* Ambient Subtle Grid Pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* Navbar */
+    .container {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* =========================================================
+       NAVIGATION BAR (REALISTIC FROSTED GLASS)
+       ========================================================= */
     .navbar {
-      backdrop-filter: blur(16px);
-      background: rgba(11, 15, 25, 0.85);
-      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(7, 9, 14, 0.82);
+      border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 14px 0;
+      padding: 13px 0;
+      transition: all 0.2s ease;
     }
 
     .nav-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
     }
 
     .brand {
@@ -83,40 +158,79 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: var(--text-main);
+      color: var(--text-hero);
+    }
+
+    .brand-logo-frame {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: #070a14;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
     }
 
     .brand-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 9px;
-      box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .brand:hover .brand-logo-frame {
+      transform: translateY(-1px) scale(1.05);
+      border-color: rgba(99, 102, 241, 0.6);
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+
+    .brand:hover .brand-logo {
+      transform: scale(1.08);
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      flex-direction: column;
     }
 
     .brand-name {
-      font-size: 19px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 21px;
       font-weight: 800;
       letter-spacing: -0.02em;
       background: var(--accent-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .version-tag {
-      font-size: 11px;
+      font-size: 10.5px;
       font-family: 'JetBrains Mono', monospace;
-      background: rgba(99, 102, 241, 0.12);
-      color: #a5b4fc;
-      padding: 3px 8px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #c7d2fe;
+      padding: 2px 7px;
       border-radius: 6px;
-      border: 1px solid rgba(99, 102, 241, 0.25);
+      border: 1px solid rgba(99, 102, 241, 0.35);
       font-weight: 600;
+      letter-spacing: 0.02em;
+      -webkit-text-fill-color: initial;
     }
 
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .status-badge {
@@ -124,20 +238,22 @@
       align-items: center;
       gap: 8px;
       padding: 6px 14px;
-      border-radius: 20px;
-      background: rgba(16, 185, 129, 0.1);
+      border-radius: var(--radius-full);
+      background: rgba(16, 185, 129, 0.08);
       border: 1px solid rgba(16, 185, 129, 0.25);
-      color: var(--success);
+      color: #34d399;
       font-size: 12px;
       font-weight: 600;
+      letter-spacing: 0.01em;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
     }
 
     .status-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--success);
-      box-shadow: 0 0 8px var(--success);
+      box-shadow: 0 0 10px var(--success);
       animation: pulse 2s infinite ease-in-out;
     }
 
@@ -150,48 +266,66 @@
       }
 
       50% {
-        opacity: 0.4;
-        transform: scale(0.85);
+        opacity: 0.45;
+        transform: scale(0.8);
       }
     }
 
-    /* Buttons */
+    /* Buttons with tactile realistic click effects */
     .btn-primary {
       background: var(--accent-gradient);
       color: #ffffff;
       border: none;
       border-radius: var(--radius-sm);
-      padding: 12px 20px;
+      padding: 12px 22px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.2s ease;
-      width: 100%;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-btn);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.35);
     }
 
     .btn-primary:hover {
-      opacity: 0.95;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+      transform: translateY(-1.5px);
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      filter: brightness(1.05);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
     }
 
     .btn-primary:disabled {
-      opacity: 0.6;
+      opacity: 0.65;
       cursor: not-allowed;
       transform: none;
+      box-shadow: none;
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-main);
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 8px 16px;
+      padding: 8px 15px;
       font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
@@ -201,104 +335,233 @@
       gap: 6px;
       transition: all 0.2s ease;
       text-decoration: none;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-highlight);
+      color: #fff;
+      transform: translateY(-1px);
     }
 
-    /* Header / Hero */
+    .btn-secondary:active {
+      transform: translateY(0);
+    }
+
+    .btn-github {
+      border-color: rgba(245, 158, 11, 0.35);
+      color: #fde047;
+      background: rgba(245, 158, 11, 0.07);
+    }
+
+    .btn-github:hover {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.6);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.2);
+    }
+
+    /* =========================================================
+       HERO SECTION (ATTRACTIVE PUBLIC DISPLAY)
+       ========================================================= */
     .hero {
       text-align: center;
-      padding: 48px 0 32px 0;
+      padding: 40px 0 28px 0;
+      position: relative;
+    }
+
+    /* Hero 3D Logo Showcase */
+    .hero-showcase {
+      display: inline-flex;
+      position: relative;
+      margin-bottom: 24px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-glow-aura {
+      position: absolute;
+      width: 280px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(168, 85, 247, 0.35) 45%, transparent 75%);
+      filter: blur(36px);
+      z-index: 0;
+      animation: pulseAura 4s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes pulseAura {
+      0% {
+        opacity: 0.65;
+        transform: scale(0.92);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1.08);
+      }
+    }
+
+    .hero-logo-card {
+      position: relative;
+      z-index: 1;
+      border-radius: 22px;
+      background: rgba(8, 12, 24, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px;
+      box-shadow:
+        0 24px 60px -12px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(99, 102, 241, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(20px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: floatHeroLogo 5s ease-in-out infinite;
+    }
+
+    @keyframes floatHeroLogo {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .hero-logo-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      border-color: rgba(99, 102, 241, 0.55);
+      box-shadow:
+        0 30px 70px -10px rgba(0, 0, 0, 0.9),
+        0 0 50px rgba(6, 182, 212, 0.5),
+        inset 0 1px 2px rgba(255, 255, 255, 0.35);
+    }
+
+    .hero-showcase-img {
+      display: block;
+      width: 250px;
+      height: auto;
+      max-width: 100%;
+      border-radius: 16px;
+      filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.55));
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 30px;
-      background: rgba(99, 102, 241, 0.1);
-      border: 1px solid rgba(99, 102, 241, 0.25);
-      color: #c7d2fe;
+      gap: 9px;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      background: rgba(99, 102, 241, 0.09);
+      border: 1px solid rgba(99, 102, 241, 0.28);
+      color: #cbd5e1;
       font-size: 12px;
       font-weight: 600;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       letter-spacing: 0.02em;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-badge .pill {
+      background: var(--accent-gradient);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .hero-title {
-      font-size: clamp(28px, 4.2vw, 44px);
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(34px, 5.2vw, 56px);
       font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-      margin-bottom: 12px;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: var(--text-hero);
     }
 
-    .hero-title span {
-      background: var(--accent-gradient);
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #c084fc 40%, #38bdf8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 20px rgba(168, 85, 247, 0.25));
     }
 
     .hero-subtitle {
-      font-size: 15.5px;
+      font-size: 16px;
       color: var(--text-muted);
-      max-width: 620px;
+      max-width: 660px;
       margin: 0 auto;
+      line-height: 1.65;
     }
 
-    /* Metrics Grid */
+    .hero-subtitle code {
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.14);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    /* =========================================================
+       METRICS / STATS CARDS (REALISTIC BOX TYPE WITH SPECULAR SHINE)
+       ========================================================= */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
-      margin: 28px 0 36px 0;
+      margin: 32px 0 38px 0;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
       .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 560px) {
       .metrics-grid {
         grid-template-columns: 1fr;
       }
     }
 
     .metric-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 16px 20px;
-      backdrop-filter: blur(12px);
-      transition: all 0.2s ease;
+      padding: 18px 20px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-realistic);
+      transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
     }
 
+    /* Top specular highlight edge for realism */
     .metric-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 2px;
-      background: transparent;
-      transition: background 0.2s;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     }
 
     .metric-card:hover {
-      border-color: var(--card-hover);
+      background: var(--bg-card-hover);
       transform: translateY(-2px);
-    }
-
-    .metric-card:hover::before {
-      background: var(--accent-gradient);
+      box-shadow: var(--shadow-card-hover);
+      border-color: rgba(99, 102, 241, 0.3);
     }
 
     .metric-header {
@@ -309,31 +572,51 @@
     }
 
     .metric-label {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-dim);
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
     }
 
-    .metric-icon {
-      font-size: 14px;
-      opacity: 0.7;
+    .metric-icon-bubble {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
     }
 
     .metric-value {
-      font-size: 20px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
       font-weight: 700;
-      color: var(--text-main);
+      color: var(--text-hero);
       display: flex;
       align-items: center;
       gap: 8px;
+      letter-spacing: -0.01em;
     }
 
-    /* Main Workspace Layout */
+    .metric-sub {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* =========================================================
+       WORKSPACE GRID (REALISTIC BOX TYPE CONTAINER)
+       ========================================================= */
     .workspace-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr);
       gap: 24px;
       margin-bottom: 50px;
       align-items: start;
@@ -346,67 +629,171 @@
     }
 
     .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
       padding: 24px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-realistic);
+      position: relative;
       min-width: 0;
-      /* CRITICAL for CSS Grid children */
+      overflow: hidden;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    /* Top Specular Realism Highlight */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      pointer-events: none;
     }
 
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       padding-bottom: 14px;
-      border-bottom: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--border-subtle);
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .card-title-group {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 0;
+      gap: 12px;
     }
 
     .card-title-icon {
-      width: 28px;
-      height: 28px;
-      background: rgba(99, 102, 241, 0.15);
-      border-radius: 6px;
+      width: 34px;
+      height: 34px;
+      background: var(--accent-gradient-glow);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
+      font-size: 16px;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
     }
 
     .card-title {
-      font-size: 16px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
       font-weight: 700;
       letter-spacing: -0.01em;
-      white-space: nowrap;
+      color: var(--text-hero);
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-dim);
     }
 
     .badge-endpoint {
-      background: rgba(99, 102, 241, 0.15);
-      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.12);
+      color: #c7d2fe;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 5px;
-      border: 1px solid rgba(99, 102, 241, 0.25);
-      flex-shrink: 0;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(99, 102, 241, 0.28);
     }
 
-    /* Form Styles */
+    /* =========================================================
+       PRESET TEMPLATES BAR (CONVENIENCE FEATURE)
+       ========================================================= */
+    .presets-container {
+      background: rgba(9, 13, 24, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-bottom: 18px;
+    }
+
+    .presets-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .presets-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .presets-tools {
+      display: flex;
+      gap: 8px;
+    }
+
+    .preset-btn-mini {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: underline;
+      transition: color 0.15s;
+    }
+
+    .preset-btn-mini:hover {
+      color: var(--text-main);
+    }
+
+    .presets-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .preset-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 5px 9px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .preset-chip:hover {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .preset-chip.active {
+      background: rgba(99, 102, 241, 0.22);
+      border-color: rgba(99, 102, 241, 0.5);
+      color: #e0e7ff;
+    }
+
+    /* =========================================================
+       REALISTIC FORM STYLING
+       ========================================================= */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
     .form-row {
@@ -418,60 +805,105 @@
     .form-label {
       display: flex;
       justify-content: space-between;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
       margin-bottom: 6px;
     }
 
     .form-label span.req {
-      color: #f87171;
+      color: #fb7185;
+      font-weight: 700;
     }
 
     .form-input,
     .form-textarea {
       width: 100%;
-      background: rgba(8, 13, 26, 0.85);
-      border: 1px solid var(--card-border);
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 10px 14px;
       color: var(--text-main);
       font-family: inherit;
       font-size: 13.5px;
-      transition: all 0.2s ease;
-      box-sizing: border-box;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-input);
+      outline: none;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: #475569;
+    }
+
+    .form-input:hover,
+    .form-textarea:hover {
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     .form-input:focus,
     .form-textarea:focus {
-      outline: none;
       border-color: var(--accent);
-      background: rgba(13, 19, 36, 0.95);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      background: #0c1222;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22), inset 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
     .form-textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 95px;
       line-height: 1.5;
+      font-family: inherit;
+    }
+
+    .format-toggle-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .format-switcher {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .format-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .format-btn.active {
+      background: rgba(99, 102, 241, 0.25);
+      color: #fff;
     }
 
     /* Response Notification Banner */
     .response-banner {
-      margin-top: 16px;
+      margin-top: 14px;
       padding: 12px 14px;
       border-radius: var(--radius-sm);
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       display: none;
-      animation: fadeIn 0.3s ease;
+      animation: bannerSlideIn 0.25s ease;
       word-break: break-all;
     }
 
-    @keyframes fadeIn {
+    @keyframes bannerSlideIn {
       from {
         opacity: 0;
-        transform: translateY(-4px);
+        transform: translateY(-6px);
       }
 
       to {
@@ -482,51 +914,135 @@
 
     .response-banner.success {
       display: block;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.35);
       color: #6ee7b7;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.12);
     }
 
     .response-banner.error {
       display: block;
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      color: #fda4af;
+      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.12);
     }
 
-    /* Tabs & Code Snippet Box */
+    /* =========================================================
+       DISPATCH HISTORY (CONVENIENCE FEATURE)
+       ========================================================= */
+    .history-section {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .history-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 125px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      font-size: 11.5px;
+      transition: background 0.15s;
+    }
+
+    .history-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .history-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .history-pill-success {
+      color: var(--success);
+      font-weight: 700;
+      font-size: 10px;
+    }
+
+    .history-pill-fail {
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 10px;
+    }
+
+    .history-action-btn {
+      background: transparent;
+      border: none;
+      color: #a5b4fc;
+      font-size: 11px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .history-action-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================================================
+       RIGHT CARD: TABS, LIVE EMAIL PREVIEW & CODE BOX
+       ========================================================= */
     .tabs-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--border-subtle);
       padding-bottom: 10px;
       margin-bottom: 14px;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .tabs-group {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
     }
 
     .tab-btn {
       background: transparent;
-      border: none;
+      border: 1px solid transparent;
       color: var(--text-dim);
       font-size: 12px;
       font-weight: 600;
       padding: 5px 11px;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
       transition: all 0.15s ease;
-    }
-
-    .tab-btn.active {
-      color: var(--text-main);
-      background: rgba(99, 102, 241, 0.18);
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .tab-btn:hover:not(.active) {
@@ -534,18 +1050,31 @@
       background: rgba(255, 255, 255, 0.04);
     }
 
+    .tab-btn.active {
+      color: #ffffff;
+      background: rgba(99, 102, 241, 0.2);
+      border-color: rgba(99, 102, 241, 0.35);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.15);
+    }
+
+    .tab-btn.preview-tab.active {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
+    }
+
     .copy-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
       color: var(--text-muted);
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       transition: all 0.2s ease;
       flex-shrink: 0;
     }
@@ -553,11 +1082,12 @@
     .copy-btn:hover {
       background: rgba(255, 255, 255, 0.12);
       color: #fff;
+      border-color: var(--border-highlight);
     }
 
     .code-container {
-      background: var(--code-bg);
-      border: 1px solid var(--card-border);
+      background: var(--bg-code);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 14px;
       font-family: 'JetBrains Mono', monospace;
@@ -565,25 +1095,67 @@
       line-height: 1.6;
       color: #e2e8f0;
       overflow-x: auto;
-      max-height: 250px;
+      max-height: 255px;
       min-width: 0;
-      /* CRITICAL */
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
     }
 
     .code-container pre {
       margin: 0;
       white-space: pre-wrap;
       word-break: break-word;
-      min-width: 0;
     }
 
-    /* Terminal Logs Box */
+    /* Live Email Preview Simulation Container */
+    .preview-container {
+      display: none;
+      background: #f1f5f9;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      max-height: 255px;
+      overflow-y: auto;
+    }
+
+    .preview-browser-bar {
+      background: #e2e8f0;
+      padding: 8px 12px;
+      border-bottom: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #475569;
+    }
+
+    .preview-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .preview-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .preview-body-content {
+      padding: 16px;
+      color: #1e293b;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Terminal & Live Logs */
     .terminal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 20px;
       margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .terminal-title {
@@ -595,32 +1167,76 @@
       gap: 6px;
     }
 
+    .terminal-tools {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-pulse-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      color: #34d399;
+      font-weight: 600;
+      padding: 2px 7px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: var(--radius-full);
+    }
+
+    .live-pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+      animation: pulse 1.5s infinite;
+    }
+
     .terminal-box {
-      background: #050811;
-      border: 1px solid var(--card-border);
+      background: #03060c;
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 12px 14px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      line-height: 1.55;
+      font-size: 11px;
+      line-height: 1.6;
       color: #94a3b8;
       height: 170px;
       overflow-y: auto;
       white-space: pre-wrap;
       word-break: break-all;
-      min-width: 0;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.7);
     }
 
-    /* Section Headers */
+    .log-line-info {
+      color: #93c5fd;
+    }
+
+    .log-line-error {
+      color: #fca5a5;
+    }
+
+    .log-line-warn {
+      color: #fcd34d;
+    }
+
+    /* =========================================================
+       API SCHEMA REFERENCE TABLE (REALISTIC CARD WITH EMBOSSED ROWS)
+       ========================================================= */
     .section-header {
       margin-bottom: 20px;
     }
 
     .section-title {
-      font-size: 20px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.02em;
       margin-bottom: 6px;
+      color: var(--text-hero);
     }
 
     .section-subtitle {
@@ -628,7 +1244,6 @@
       font-size: 14px;
     }
 
-    /* Table */
     .table-responsive {
       overflow-x: auto;
       min-width: 0;
@@ -642,20 +1257,24 @@
     }
 
     .api-table th {
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
       color: var(--text-dim);
-      font-weight: 600;
-      border-bottom: 1px solid var(--card-border);
-      font-size: 12px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 11.5px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
     }
 
     .api-table td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--card-border);
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border-subtle);
       color: var(--text-main);
+    }
+
+    .api-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
     }
 
     .api-table tr:last-child td {
@@ -665,18 +1284,21 @@
     .api-table code {
       font-family: 'JetBrains Mono', monospace;
       background: rgba(99, 102, 241, 0.12);
-      color: #a5b4fc;
+      color: #c7d2fe;
       padding: 2px 6px;
       border-radius: 4px;
+      border: 1px solid rgba(99, 102, 241, 0.2);
       font-size: 12px;
     }
 
-    /* Deploy Cards */
+    /* =========================================================
+       DEPLOY CARDS (REALISTIC BOX TYPE WITH HOVER LIFT)
+       ========================================================= */
     .deploy-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
-      margin-bottom: 50px;
+      margin-bottom: 45px;
     }
 
     @media (max-width: 860px) {
@@ -686,79 +1308,320 @@
     }
 
     .deploy-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      padding: 20px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-realistic);
+      position: relative;
+    }
+
+    .deploy-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     }
 
     .deploy-card:hover {
-      border-color: var(--card-hover);
-      transform: translateY(-2px);
+      border-color: rgba(99, 102, 241, 0.35);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-card-hover);
+      background: var(--bg-card-hover);
     }
 
     .deploy-card-title {
-      font-size: 15.5px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
       font-weight: 700;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
+      color: var(--text-hero);
     }
 
     .deploy-card-desc {
       color: var(--text-muted);
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.55;
       margin-bottom: 18px;
+    }
+
+    /* =========================================================
+       TOAST NOTIFICATION COMPONENT (FLOATING CONVENIENCE)
+       ========================================================= */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: rgba(13, 17, 28, 0.95);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      color: #fff;
+      font-size: 13px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), 0 0 20px rgba(99, 102, 241, 0.2);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
+      min-width: 260px;
+      max-width: 380px;
+    }
+
+    .toast.hide {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .toast-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .toast-content {
+      flex: 1;
+    }
+
+    .toast-title {
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .toast-msg {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    /* =========================================================
+       TRANSPORTER DIAGNOSTIC MODAL (CONVENIENCE POPUP)
+       ========================================================= */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-card {
+      background: #0d1220;
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      padding: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.25);
+      position: relative;
+      animation: modalScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalScale {
+      from {
+        opacity: 0;
+        transform: scale(0.94);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.15s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
     }
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--card-border);
-      padding: 32px 0;
+      border-top: 1px solid var(--border-subtle);
+      padding: 34px 0;
       text-align: center;
       color: var(--text-dim);
-      font-size: 12.5px;
-      margin-top: 40px;
+      font-size: 13px;
+      margin-top: 45px;
     }
 
     footer a {
       color: #a5b4fc;
       text-decoration: none;
+      font-weight: 600;
+      transition: color 0.15s;
     }
 
     footer a:hover {
+      color: #fff;
       text-decoration: underline;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
     }
   </style>
 </head>
 
 <body>
+  <!-- Floating Toast Notifications Host -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Transporter Diagnostic Modal -->
+  <div class="modal-backdrop" id="transporterModal" onclick="closeTransporterModalOnBackdrop(event)">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeTransporterModal()">&times;</button>
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+        <div class="brand-logo-frame" style="width: 44px; height: 44px; border-radius: 12px;">
+          <img src="/logo.png" alt="MailSync" class="brand-logo" />
+        </div>
+        <div>
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; color: #fff; font-weight: 700;">SMTP
+            Transporter Diagnostic</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">Connection & credentials status verification</p>
+        </div>
+      </div>
+
+      <div
+        style="background: #060913; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 16px; font-size: 12.5px;">
+        <div
+          style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+          <span style="color: var(--text-dim);">Configured Provider:</span>
+          <span style="color: #fff; font-weight: 600;" id="modalService">Checking...</span>
+        </div>
+        <div
+          style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+          <span style="color: var(--text-dim);">Sender Account:</span>
+          <span style="color: #a5b4fc; font-family: 'JetBrains Mono', monospace;" id="modalUser">Checking...</span>
+        </div>
+        <div
+          style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+          <span style="color: var(--text-dim);">From Name:</span>
+          <span style="color: #fff; font-weight: 600;" id="modalFromName">MailSync</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0;">
+          <span style="color: var(--text-dim);">API Protection:</span>
+          <span style="color: #34d399; font-weight: 600;" id="modalAuth">Public</span>
+        </div>
+      </div>
+
+      <div id="modalVerifyResult"
+        style="padding: 12px; border-radius: var(--radius-sm); font-size: 12px; margin-bottom: 16px; display: none;">
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn-secondary" onclick="closeTransporterModal()">Close</button>
+        <button class="btn-primary" id="modalVerifyBtn" onclick="runTransporterVerification()"
+          style="width: auto; padding: 9px 18px; font-size: 13px;">
+          <span>⚡</span> Re-test Connection
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Navigation -->
   <nav class="navbar">
     <div class="container">
       <div class="nav-inner">
         <a href="/" class="brand" id="navBrand">
-          <img src="/logo.svg" alt="MailSync Logo" class="brand-logo" />
-          <span class="brand-name">MailSync</span>
-          <span class="version-tag">v1.0.0</span>
+          <div class="brand-logo-frame">
+            <img src="/logo.png" alt="MailSync Logo" class="brand-logo" />
+          </div>
+          <div class="brand-title-wrap">
+            <span class="brand-name">
+              MailSync
+              <span class="version-tag">v1.0.0</span>
+            </span>
+          </div>
         </a>
 
         <div class="nav-actions">
-          <div class="status-badge" id="systemStatusBadge">
+          <div class="status-badge" id="systemStatusBadge" title="Click to view diagnostic details"
+            onclick="openTransporterModal()" style="cursor: pointer;">
             <div class="status-dot"></div>
             <span id="systemStatusText">Operational</span>
           </div>
-          <button class="btn-secondary" id="verifyBtn" onclick="verifyConnection()">
-            Test Transporter
+          <button class="btn-secondary" id="verifyBtn" onclick="openTransporterModal()">
+            <span>🔍</span>
+            <span>Transporter Diagnostic</span>
           </button>
-          <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank" class="btn-secondary"
-            style="gap: 6px; padding: 7px 14px; font-size: 12px; border-color: rgba(234, 179, 8, 0.4); color: #fef08a; background: rgba(234, 179, 8, 0.08);">
+          <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank" class="btn-secondary btn-github">
             <span>⭐</span>
             <span>Star on GitHub</span>
           </a>
@@ -768,56 +1631,60 @@
   </nav>
 
   <main class="container">
-    <!-- Hero Header -->
+    <!-- Hero Header with 3D Logo Artwork -->
     <header class="hero">
       <div class="hero-badge">
-        <span> Open-source &bull; Self-Hosted &bull; Vercel &bull; Netlify &bull; Docker</span>
+        <span class="pill">MICRO-SERVICE</span>
+        <span>Open-Source &bull; Self-Hosted &bull; Zero Overhead</span>
       </div>
       <h1 class="hero-title">
         The Minimalist Email API<br />
-        <span>For Developers.</span>
+        <span class="gradient-text">For Developers & AI Agents.</span>
       </h1>
       <p class="hero-subtitle">
-        Deploy your own private email service in under 60 seconds. Send transactional emails via standard HTTP POST
-        calls to <code
-          style="color: #a5b4fc; background: rgba(99, 102, 241, 0.12); padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;">/mail</code>.
+        Deploy your own private transactional email service in under 60 seconds. Send instant emails via high-speed HTTP
+        POST calls to <code>/mail</code> with zero third-party lock-in.
       </p>
     </header>
 
-    <!-- Metrics Bar -->
+    <!-- Metrics Bar (Realistic Cards) -->
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-header">
-          <span class="metric-label">Service Status</span>
-          <span class="metric-icon">🟢</span>
+          <span class="metric-label">Engine Status</span>
+          <div class="metric-icon-bubble">🟢</div>
         </div>
         <div class="metric-value" id="statStatus">
-          <span style="color: var(--success); font-size: 18px;">Active</span>
+          <span style="color: var(--success);">Active</span>
         </div>
+        <div class="metric-sub"><span>●</span> HTTP 200 OK &bull; Ready</div>
       </div>
 
       <div class="metric-card">
         <div class="metric-header">
           <span class="metric-label">Server Uptime</span>
-          <span class="metric-icon">⏱️</span>
+          <div class="metric-icon-bubble">⏱️</div>
         </div>
         <div class="metric-value" id="statUptime">--</div>
+        <div class="metric-sub"><span>●</span> Continuous live instance</div>
       </div>
 
       <div class="metric-card">
         <div class="metric-header">
-          <span class="metric-label">Emails Dispatched</span>
-          <span class="metric-icon">📨</span>
+          <span class="metric-label">Dispatched Emails</span>
+          <div class="metric-icon-bubble">📨</div>
         </div>
         <div class="metric-value" id="statMailHits">0</div>
+        <div class="metric-sub"><span>●</span> Lifetime session sends</div>
       </div>
 
-      <div class="metric-card">
+      <div class="metric-card" onclick="openTransporterModal()" style="cursor: pointer;" title="View transporter info">
         <div class="metric-header">
           <span class="metric-label">Authentication</span>
-          <span class="metric-icon">🔐</span>
+          <div class="metric-icon-bubble">🔐</div>
         </div>
-        <div class="metric-value" id="statAuth" style="font-size: 16px;">Checking...</div>
+        <div class="metric-value" id="statAuth" style="font-size: 18px;">Checking...</div>
+        <div class="metric-sub" id="statAuthSub"><span>●</span> Instance access policy</div>
       </div>
     </div>
 
@@ -828,16 +1695,45 @@
         <div class="card-header">
           <div class="card-title-group">
             <div class="card-title-icon">✉️</div>
-            <h2 class="card-title">Interactive Email Tester</h2>
+            <div>
+              <h2 class="card-title">Interactive Email Tester</h2>
+              <div class="card-subtitle">Dispatch test emails directly to real recipients</div>
+            </div>
           </div>
           <span class="badge-endpoint">POST /mail</span>
+        </div>
+
+        <!-- Convenience Feature: Quick Templates / Presets -->
+        <div class="presets-container">
+          <div class="presets-title-row">
+            <span class="presets-label">⚡ Quick Presets (1-Click Fill)</span>
+            <div class="presets-tools">
+              <button type="button" class="preset-btn-mini" onclick="fillRandomData()">Random Data</button>
+              <button type="button" class="preset-btn-mini" onclick="resetForm()">Clear</button>
+            </div>
+          </div>
+          <div class="presets-row">
+            <button type="button" class="preset-chip active" id="presetWelcome" onclick="applyPreset('welcome')">
+              👋 Welcome Email
+            </button>
+            <button type="button" class="preset-chip" id="presetOtp" onclick="applyPreset('otp')">
+              🔑 OTP Verification
+            </button>
+            <button type="button" class="preset-chip" id="presetReceipt" onclick="applyPreset('receipt')">
+              🧾 Order Receipt
+            </button>
+            <button type="button" class="preset-chip" id="presetHtml" onclick="applyPreset('html')">
+              🎨 Rich HTML
+            </button>
+          </div>
         </div>
 
         <form id="mailForm" onsubmit="handleSendTestMail(event)">
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="testEmail">
-                Recipient Email <span class="req">*</span>
+                <span>Recipient Email <span class="req">*</span></span>
+                <span style="font-size: 11px; color: var(--text-dim);">To address</span>
               </label>
               <input type="email" id="testEmail" class="form-input" placeholder="user@example.com" required
                 oninput="updateCodePreview()" />
@@ -845,7 +1741,8 @@
 
             <div class="form-group">
               <label class="form-label" for="testName">
-                Recipient Name
+                <span>Recipient Name</span>
+                <span style="font-size: 11px; color: var(--text-dim);">Greeting name</span>
               </label>
               <input type="text" id="testName" class="form-input" placeholder="Alex Rivers"
                 oninput="updateCodePreview()" />
@@ -855,82 +1752,141 @@
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="testFromName">
-                Sender Name (From Name)
+                <span>Sender Brand Name</span>
+                <span style="font-size: 11px; color: var(--text-dim);">From Name</span>
               </label>
               <input type="text" id="testFromName" class="form-input" placeholder="MailSync (or your brand)"
                 oninput="updateCodePreview()" />
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="testSubject">Subject Line</label>
+              <label class="form-label" for="testSubject">
+                <span>Subject Line</span>
+                <span style="font-size: 11px; color: var(--text-dim);">Header title</span>
+              </label>
               <input type="text" id="testSubject" class="form-input" placeholder="Welcome to our platform!"
                 oninput="updateCodePreview()" />
             </div>
           </div>
 
+          <!-- Message Body with Plain Text vs Custom HTML Mode Switcher -->
           <div class="form-group">
-            <label class="form-label" for="testMessage">
-              Message Content <span class="req">*</span>
-            </label>
-            <textarea id="testMessage" class="form-textarea" placeholder="Enter message text..." required
+            <div class="format-toggle-bar">
+              <label class="form-label" for="testMessage" style="margin-bottom: 0;">
+                <span id="contentFieldLabel">Message Content <span class="req">*</span></span>
+              </label>
+              <div class="format-switcher">
+                <button type="button" class="format-btn active" id="modeTextBtn" onclick="setMessageMode('text')">Plain
+                  Text</button>
+                <button type="button" class="format-btn" id="modeHtmlBtn" onclick="setMessageMode('html')">Custom
+                  HTML</button>
+              </div>
+            </div>
+            <textarea id="testMessage" class="form-textarea" placeholder="Enter message text or HTML content..."
+              required
               oninput="updateCodePreview()">Hello! This is a test email sent directly from the MailSync interactive dashboard.</textarea>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="testApiKey">
-              Access Key (optional if not set in .env)
+              <span>Access Key Header</span>
+              <span style="font-size: 11px; color: var(--text-dim);">Optional unless enabled in .env</span>
             </label>
-            <input type="password" id="testApiKey" class="form-input" placeholder="Enter ACCESS_KEY header if required"
-              oninput="updateCodePreview()" />
+            <input type="password" id="testApiKey" class="form-input"
+              placeholder="x-access-key header value (leave blank if public)" oninput="updateCodePreview()" />
           </div>
 
-          <button type="submit" class="btn-primary" id="sendBtn">
-            <span id="sendBtnText">Send Email via /mail</span>
+          <button type="submit" class="btn-primary" id="sendBtn" style="width: 100%;">
+            <span id="sendBtnText">Dispatch Email via /mail</span>
           </button>
 
           <div id="responseBox" class="response-banner"></div>
         </form>
+
+        <!-- Convenience Feature: Local Dispatch History -->
+        <div class="history-section">
+          <div class="history-header">
+            <span class="history-title">🕒 Recent Test Dispatches</span>
+            <button type="button" class="preset-btn-mini" onclick="clearDispatchHistory()">Clear</button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div style="font-size: 11.5px; color: var(--text-dim); padding: 8px; text-align: center;">
+              No test emails dispatched yet this session.
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Right: Real-Time Snippet & Console -->
+      <!-- Right: Real-Time Snippet, Live Email Preview & Terminal -->
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
             <div class="card-title-icon">💻</div>
-            <h2 class="card-title">Real-time Request Snippet</h2>
+            <div>
+              <h2 class="card-title">Live Preview & Snippets</h2>
+              <div class="card-subtitle">Integration code generated in real-time</div>
+            </div>
           </div>
-          <span class="badge-endpoint">Ready to copy</span>
+          <span class="badge-endpoint">Auto-Sync</span>
         </div>
 
         <div class="tabs-bar">
           <div class="tabs-group">
             <button class="tab-btn active" id="tabCurl" onclick="switchTab('curl')">cURL</button>
-            <button class="tab-btn" id="tabJs" onclick="switchTab('js')">JavaScript (Fetch)</button>
+            <button class="tab-btn" id="tabJs" onclick="switchTab('js')">JS (Fetch)</button>
+            <button class="tab-btn" id="tabAxios" onclick="switchTab('axios')">Node (Axios)</button>
             <button class="tab-btn" id="tabPy" onclick="switchTab('py')">Python</button>
-            <button class="tab-btn" id="tabJson" onclick="switchTab('json')">JSON Payload</button>
-            <button class="tab-btn" id="tabAgent" onclick="switchTab('agent')">AI Prompt</button>
+            <button class="tab-btn" id="tabJson" onclick="switchTab('json')">JSON</button>
+            <button class="tab-btn" id="tabAgent" onclick="switchTab('agent')">🤖 AI Prompt</button>
+            <button class="tab-btn preview-tab" id="tabPreview" onclick="switchTab('preview')">👁️ Email
+              Preview</button>
           </div>
           <button class="copy-btn" id="copyCodeBtn" onclick="copySnippet()">
-            <span>📋</span> <span id="copyBtnText">Copy</span>
+            <span id="copyBtnIcon">📋</span> <span id="copyBtnText">Copy</span>
           </button>
         </div>
 
-        <div class="code-container">
+        <!-- Code Snippet Box -->
+        <div class="code-container" id="codeWrapper">
           <pre id="codeSnippet"></pre>
         </div>
 
+        <!-- Simulated Live Email Preview Frame -->
+        <div class="preview-container" id="emailPreviewBox">
+          <div class="preview-browser-bar">
+            <div class="preview-dots">
+              <span class="preview-dot" style="background: #ef4444;"></span>
+              <span class="preview-dot" style="background: #f59e0b;"></span>
+              <span class="preview-dot" style="background: #10b981;"></span>
+            </div>
+            <div style="font-weight: 600;" id="previewSubjectBar">Preview: Welcome to our platform!</div>
+            <div style="font-size: 10px; color: #64748b;" id="previewToBar">To: user@example.com</div>
+          </div>
+          <div class="preview-body-content" id="emailPreviewHtml">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Live Server Logs Box -->
         <div class="terminal-header">
           <div class="terminal-title">
-            <span>🖥️</span> Live Server Logs (<a href="/logs" target="_blank"
-              style="color: #818cf8; text-decoration: none;">/logs</a>)
+            <span>🖥️</span> Live Server Diagnostic Stream
           </div>
-          <button class="copy-btn" onclick="refreshLogs()" style="font-size: 11px; padding: 2px 8px;">Refresh</button>
+          <div class="terminal-tools">
+            <div class="live-pulse-badge">
+              <div class="live-pulse-dot"></div>
+              <span>Live</span>
+            </div>
+            <button class="copy-btn" onclick="refreshLogs()" style="font-size: 11px; padding: 2px 8px;">Refresh</button>
+            <button class="copy-btn" onclick="clearLogsViewer()"
+              style="font-size: 11px; padding: 2px 8px;">Clear</button>
+          </div>
         </div>
-        <div class="terminal-box" id="logsViewer">Loading server logs...</div>
+        <div class="terminal-box" id="logsViewer">Connecting to server log stream...</div>
       </div>
     </section>
 
-    <!-- API Reference Section -->
+    <!-- API Reference Section (Public-Attractive Spec) -->
     <section style="margin-bottom: 45px;">
       <div class="section-header">
         <h2 class="section-title">API Schema Reference</h2>
@@ -946,64 +1902,67 @@
                 <th>Type</th>
                 <th>Required</th>
                 <th>Description</th>
+                <th>Quick Action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><code>email</code> or <code>to</code></td>
                 <td>String</td>
-                <td><span style="color: var(--danger); font-weight: 600;">Yes</span></td>
+                <td><span style="color: var(--danger); font-weight: 700;">Yes</span></td>
                 <td>Target recipient email address (e.g. <code>user@example.com</code>).</td>
+                <td><button class="preset-btn-mini" onclick="focusField('testEmail')">Focus Input</button></td>
               </tr>
               <tr>
                 <td><code>message</code></td>
                 <td>String</td>
-                <td><span style="color: var(--danger); font-weight: 600;">Yes*</span></td>
-                <td>Plaintext message body (automatically wrapped in a responsive HTML layout).</td>
+                <td><span style="color: var(--danger); font-weight: 700;">Yes*</span></td>
+                <td>Plaintext message body (automatically wrapped in a responsive branded HTML layout).</td>
+                <td><button class="preset-btn-mini" onclick="setMessageMode('text'); focusField('testMessage')">Set
+                    Plaintext</button></td>
+              </tr>
+              <tr>
+                <td><code>html</code></td>
+                <td>String</td>
+                <td><span style="color: var(--warning); font-weight: 600;">Optional*</span></td>
+                <td>Custom HTML body if you wish to bypass automatic templating with your own markup.</td>
+                <td><button class="preset-btn-mini" onclick="setMessageMode('html'); applyPreset('html')">Load
+                    HTML</button></td>
               </tr>
               <tr>
                 <td><code>subject</code></td>
                 <td>String</td>
                 <td>No</td>
                 <td>Email subject line (defaults to "New Notification from MailSync").</td>
+                <td><button class="preset-btn-mini" onclick="focusField('testSubject')">Focus Input</button></td>
               </tr>
               <tr>
                 <td><code>name</code></td>
                 <td>String</td>
                 <td>No</td>
-                <td>Recipient name for personalized greeting in the email body.</td>
+                <td>Recipient name for personalized greeting in the email body (e.g. "Hello Alex,").</td>
+                <td><button class="preset-btn-mini" onclick="focusField('testName')">Focus Input</button></td>
               </tr>
               <tr>
                 <td><code>fromName</code></td>
                 <td>String</td>
                 <td>No</td>
-                <td>Custom sender/from name (e.g. <code>"Acme Support"</code>). Overrides the <code>FROM_NAME</code>
-                  environment variable.</td>
-              </tr>
-              <tr>
-                <td><code>from</code></td>
-                <td>String</td>
-                <td>No</td>
-                <td>Full custom sender address (e.g. <code>"Acme" &lt;support@domain.com&gt;</code>).</td>
-              </tr>
-              <tr>
-                <td><code>html</code></td>
-                <td>String</td>
-                <td>No*</td>
-                <td>Custom HTML body if you wish to bypass automatic templating.</td>
+                <td>Custom sender name (e.g. <code>"Acme Support"</code>). Overrides the server default.</td>
+                <td><button class="preset-btn-mini" onclick="focusField('testFromName')">Focus Input</button></td>
               </tr>
             </tbody>
           </table>
           <div
-            style="padding: 12px 16px; background: rgba(99, 102, 241, 0.08); border-top: 1px solid var(--card-border); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            style="padding: 14px 18px; background: rgba(99, 102, 241, 0.07); border-top: 1px solid var(--border-subtle); font-size: 12.5px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span>🛡️</span>
               <span><strong>Open Source Watermark:</strong> All outgoing emails include a footer badge indicating they
                 are powered by the open-source MailSync project.</span>
             </div>
             <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank"
-              style="color: #fef08a; text-decoration: none; font-size: 11.5px; font-weight: 700;">⭐ Star MailSync on
-              GitHub &rarr;</a>
+              style="color: #fef08a; text-decoration: none; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+              ⭐ Star MailSync on GitHub &rarr;
+            </a>
           </div>
         </div>
       </div>
@@ -1025,14 +1984,15 @@
               <svg width="18" height="18" viewBox="0 0 115 100" fill="#fff">
                 <path d="M57.5 0L115 100H0L57.5 0Z" />
               </svg>
-              Vercel Deployment
+              Vercel Serverless
             </h3>
             <p class="deploy-card-desc">
-              Deploy to Vercel Serverless Functions with zero extra setup. Uses native Node.js runtime and routes all
-              requests seamlessly.
+              Deploy to Vercel Serverless Functions with zero extra setup. Native Node.js runtime and instant global
+              edge caching.
             </p>
           </div>
-          <a href="https://vercel.com/new" target="_blank" class="btn-secondary" style="width: 100%;">
+          <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FHarshit-Maurya838%2FMailSync"
+            target="_blank" class="btn-secondary" style="width: 100%;">
             Deploy to Vercel &rarr;
           </a>
         </div>
@@ -1045,14 +2005,15 @@
                 <path
                   d="M16.92 8.42l-2.73-2.73L12 7.88l2.73 2.73 2.19-2.19zm-5.46 5.46L8.73 11.15 6 13.88l2.73 2.73 2.73-2.73z" />
               </svg>
-              Netlify Deployment
+              Netlify Functions
             </h3>
             <p class="deploy-card-desc">
-              Pre-configured with <code style="color: #a5b4fc;">netlify.toml</code> and serverless-http function
-              adapter. Works out of the box.
+              Pre-configured with <code style="color: #a5b4fc;">netlify.toml</code> and serverless-http adapter. Works
+              out of the box.
             </p>
           </div>
-          <a href="https://app.netlify.com/start" target="_blank" class="btn-secondary" style="width: 100%;">
+          <a href="https://app.netlify.com/start/deploy?repository=https://github.com/Harshit-Maurya838/MailSync"
+            target="_blank" class="btn-secondary" style="width: 100%;">
             Deploy to Netlify &rarr;
           </a>
         </div>
@@ -1065,15 +2026,16 @@
                 <path
                   d="M13.98 11.08h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm-2.88 0h2.08v1.94H5.33zm11.53-2.68h2.08v1.94h-2.08zm-2.88 0h2.08v1.94H13.98zm-2.88 0h2.08v1.94H11.1zm-2.89 0h2.08v1.94H8.21zm8.65-2.68h2.08v1.94h-2.08z" />
               </svg>
-              Docker / Self-Host
+              Docker / VPS
             </h3>
             <p class="deploy-card-desc">
-              Run on Coolify, Railway, Render, or any VPS using Docker or docker-compose with pre-built production
-              recipes.
+              Run on Coolify, Railway, Render, or any Linux VPS using Docker Compose with pre-built production recipes.
             </p>
           </div>
           <code
-            style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; display: block; background: #050811; padding: 9px; border-radius: 6px; border: 1px solid var(--card-border); color: #cbd5e1;">docker compose up -d</code>
+            style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; display: block; background: #050811; padding: 10px; border-radius: 6px; border: 1px solid var(--border-subtle); color: #cbd5e1; cursor: pointer;"
+            onclick="copyText('docker compose up -d', 'Docker command copied!')"
+            title="Click to copy">docker compose up -d</code>
         </div>
       </div>
     </section>
@@ -1087,11 +2049,12 @@
       </div>
 
       <div class="card"
-        style="border: 1px solid rgba(99, 102, 241, 0.35); background: linear-gradient(180deg, rgba(30, 27, 75, 0.35) 0%, rgba(17, 24, 39, 0.75) 100%);">
+        style="border: 1px solid rgba(99, 102, 241, 0.4); background: linear-gradient(180deg, rgba(30, 27, 75, 0.4) 0%, rgba(13, 17, 28, 0.85) 100%);">
         <div
           style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
           <div>
-            <h3 style="font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+            <h3
+              style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
               <span>⚡</span> 1-Click AI Assistant Prompt
             </h3>
             <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
@@ -1100,7 +2063,7 @@
             </p>
           </div>
           <button class="btn-primary" onclick="copyAgentPrompt()"
-            style="width: auto; padding: 8px 16px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
+            style="width: auto; padding: 9px 18px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
             <span>📋</span> <span id="copyAgentPromptBtnText">Copy AI Agent Prompt</span>
           </button>
         </div>
@@ -1110,7 +2073,7 @@
         <div
           style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--text-muted);">
           <span>📦 Includes pre-built Antigravity workspace skill at <code
-              style="color: #a5b4fc;">.agents/skills/mailsync-integration</code></span>
+              style="color: #a5b4fc; background: rgba(99,102,241,0.12); padding: 2px 6px; border-radius: 4px;">.agents/skills/mailsync-integration</code></span>
           <a href="https://github.com/Harshit-Maurya838/MailSync/blob/main/INTEGRATION_PROMPT.md" target="_blank"
             style="color: #818cf8; text-decoration: none; font-weight: 600;">View Full Agent Guide &rarr;</a>
         </div>
@@ -1119,11 +2082,19 @@
 
     <!-- Footer -->
     <footer>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 14px;">
+        <div class="brand-logo-frame" style="width: 32px; height: 32px; border-radius: 9px;">
+          <img src="/logo.png" alt="MailSync" class="brand-logo" />
+        </div>
+        <span
+          style="font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MailSync</span>
+        <span class="version-tag">v1.0.0</span>
+      </div>
       <p>
         <strong>MailSync</strong> &bull; Open-source, self-hosted email sending API. Built with <a
           href="https://nodemailer.com" target="_blank">Nodemailer</a> and Express.
       </p>
-      <p style="margin-top: 6px;">
+      <p style="margin-top: 8px;">
         Released under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a> &bull;
         <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank">GitHub Repository</a> &bull;
         <a href="https://github.com/Harshit-Maurya838/MailSync/blob/main/CONTRIBUTING.md" target="_blank">Contributing
@@ -1133,31 +2104,197 @@
   </main>
 
   <script>
+    // State management
     let activeTab = 'curl';
+    let currentMessageMode = 'text'; // 'text' | 'html'
+    let cachedServerInfo = null;
+    let autoLogInterval = null;
 
+    // Toast Notification System
+    function showToast(title, message, icon = '✨') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div class="toast-icon">${icon}</div>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          ${message ? `<div class="toast-msg">${message}</div>` : ''}
+        </div>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 250);
+      }, 3500);
+    }
+
+    function copyText(text, successMsg = 'Copied to clipboard!') {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied!', successMsg, '📋');
+      }).catch(err => {
+        console.error('Clipboard copy failed', err);
+      });
+    }
+
+    // Tab Switching
     function switchTab(tab) {
       activeTab = tab;
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       const activeBtn = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
       if (activeBtn) activeBtn.classList.add('active');
+
+      const codeWrapper = document.getElementById('codeWrapper');
+      const previewBox = document.getElementById('emailPreviewBox');
+      const copyBtn = document.getElementById('copyCodeBtn');
+
+      if (tab === 'preview') {
+        codeWrapper.style.display = 'none';
+        previewBox.style.display = 'block';
+        copyBtn.style.display = 'none';
+        renderLiveEmailPreview();
+      } else {
+        codeWrapper.style.display = 'block';
+        previewBox.style.display = 'none';
+        copyBtn.style.display = 'inline-flex';
+        updateCodePreview();
+      }
+    }
+
+    // Message Format Mode: Plain Text vs Custom HTML
+    function setMessageMode(mode) {
+      currentMessageMode = mode;
+      const textBtn = document.getElementById('modeTextBtn');
+      const htmlBtn = document.getElementById('modeHtmlBtn');
+      const label = document.getElementById('contentFieldLabel');
+      const textarea = document.getElementById('testMessage');
+
+      if (mode === 'html') {
+        textBtn.classList.remove('active');
+        htmlBtn.classList.add('active');
+        label.innerHTML = 'HTML Email Code (bypass auto template) <span class="req">*</span>';
+        textarea.placeholder = '<div style="font-family: sans-serif;"><h2>Hello World</h2><p>Custom HTML template</p></div>';
+      } else {
+        textBtn.classList.add('active');
+        htmlBtn.classList.remove('active');
+        label.innerHTML = 'Message Content <span class="req">*</span>';
+        textarea.placeholder = 'Enter message text...';
+      }
       updateCodePreview();
+    }
+
+    function focusField(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // Presets Manager
+    const PRESETS = {
+      welcome: {
+        email: 'alex.rivers@example.com',
+        name: 'Alex Rivers',
+        fromName: 'MailSync Onboarding',
+        subject: 'Welcome to MailSync! 🚀',
+        mode: 'text',
+        message: 'Hello Alex!\n\nWelcome to our platform. Your account is active and you can now dispatch transactional emails via high-speed HTTP calls.\n\nHappy sending,\nThe MailSync Team'
+      },
+      otp: {
+        email: 'security.test@example.com',
+        name: 'Jordan Lee',
+        fromName: 'MailSync Auth',
+        subject: 'Your One-Time Passcode (OTP): 849201',
+        mode: 'text',
+        message: 'Your verification code is: 849201\n\nThis code is valid for 10 minutes. If you did not request this code, please ignore this email.'
+      },
+      receipt: {
+        email: 'billing@example.com',
+        name: 'Morgan Smith',
+        fromName: 'MailSync Billing',
+        subject: 'Receipt for Order #MS-9402',
+        mode: 'text',
+        message: 'Thank you for your order!\n\nOrder ID: #MS-9402\nAmount: $0.00 (Open-Source Free Plan)\nStatus: Complete\n\nAll systems operational.'
+      },
+      html: {
+        email: 'dev@example.com',
+        name: 'Taylor Swift',
+        fromName: 'Design Studio',
+        subject: 'Exclusive Invitation & System Update',
+        mode: 'html',
+        message: `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; padding: 28px; border-radius: 12px; color: #f8fafc; text-align: center;">
+  <h1 style="color: #818cf8; margin: 0 0 12px 0; font-size: 22px;">⚡ MailSync Custom HTML</h1>
+  <p style="color: #cbd5e1; font-size: 14px; line-height: 1.6; margin: 0 0 20px 0;">
+    This is rendered with rich inline CSS styles, gradients, and custom responsive tables!
+  </p>
+  <a href="https://github.com/Harshit-Maurya838/MailSync" style="background: linear-gradient(135deg, #6366f1, #a855f7); color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 13px; display: inline-block;">
+    Star on GitHub ⭐
+  </a>
+</div>`
+      }
+    };
+
+    function applyPreset(presetKey) {
+      const p = PRESETS[presetKey];
+      if (!p) return;
+
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      const activeChip = document.getElementById('preset' + presetKey.charAt(0).toUpperCase() + presetKey.slice(1));
+      if (activeChip) activeChip.classList.add('active');
+
+      document.getElementById('testEmail').value = p.email;
+      document.getElementById('testName').value = p.name;
+      document.getElementById('testFromName').value = p.fromName;
+      document.getElementById('testSubject').value = p.subject;
+      setMessageMode(p.mode);
+      document.getElementById('testMessage').value = p.message;
+
+      updateCodePreview();
+      showToast('Preset Loaded', `Applied "${presetKey.toUpperCase()}" template`, '⚡');
+    }
+
+    function fillRandomData() {
+      const randomId = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('testEmail').value = `user_${randomId}@example.com`;
+      document.getElementById('testName').value = `User ${randomId}`;
+      document.getElementById('testFromName').value = `MailSync #${randomId}`;
+      document.getElementById('testSubject').value = `Test Message #${randomId}`;
+      document.getElementById('testMessage').value = `Automated dynamic test notification #${randomId} dispatched at ${new Date().toLocaleTimeString()}.`;
+      setMessageMode('text');
+      updateCodePreview();
+      showToast('Randomized', 'Filled form with random sample values', '🎲');
+    }
+
+    function resetForm() {
+      document.getElementById('testEmail').value = '';
+      document.getElementById('testName').value = '';
+      document.getElementById('testFromName').value = '';
+      document.getElementById('testSubject').value = '';
+      document.getElementById('testMessage').value = '';
+      document.getElementById('testApiKey').value = '';
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      updateCodePreview();
+      showToast('Form Cleared', 'All input fields have been reset', '🧹');
     }
 
     function getFormData() {
       return {
-        email: document.getElementById('testEmail').value || 'user@example.com',
-        name: document.getElementById('testName').value || 'Alex Rivers',
+        email: document.getElementById('testEmail').value.trim() || 'user@example.com',
+        name: document.getElementById('testName').value.trim() || 'Alex Rivers',
         fromName: document.getElementById('testFromName').value.trim() || '',
-        subject: document.getElementById('testSubject').value || 'Welcome to our platform!',
+        subject: document.getElementById('testSubject').value.trim() || 'Welcome to our platform!',
         message: document.getElementById('testMessage').value || 'Hello! This is a test email sent directly from the MailSync interactive dashboard.',
-        apiKey: document.getElementById('testApiKey').value.trim()
+        apiKey: document.getElementById('testApiKey').value.trim(),
+        isHtml: currentMessageMode === 'html'
       };
     }
 
     function buildAgentPrompt(origin, data, payload) {
       const authHeaderLine = data.apiKey
         ? `- x-access-key: ${data.apiKey}`
-        : `- x-access-key: (none configured on this instance)`;
+        : `- x-access-key: (none configured on this instance - public access)`;
 
       const envKeyLine = data.apiKey
         ? `MAILSYNC_ACCESS_KEY=${data.apiKey}`
@@ -1197,9 +2334,14 @@ ${JSON.stringify(payload, null, 2)}
       const payload = {
         email: data.email,
         name: data.name,
-        subject: data.subject,
-        message: data.message
+        subject: data.subject
       };
+
+      if (data.isHtml) {
+        payload.html = data.message;
+      } else {
+        payload.message = data.message;
+      }
 
       if (data.fromName) {
         payload.fromName = data.fromName;
@@ -1210,6 +2352,9 @@ ${JSON.stringify(payload, null, 2)}
       if (agentPreviewEl) {
         agentPreviewEl.innerText = agentPrompt;
       }
+
+      // Live Email Preview sync
+      renderLiveEmailPreview();
 
       if (activeTab === 'curl') {
         let authHeader = data.apiKey ? ` \\\n  -H "x-access-key: ${data.apiKey}"` : '';
@@ -1227,6 +2372,16 @@ ${JSON.stringify(payload, null, 2)}
 
 const result = await response.json();
 console.log(result);`;
+      } else if (activeTab === 'axios') {
+        const headers = { 'Content-Type': 'application/json' };
+        if (data.apiKey) headers['x-access-key'] = data.apiKey;
+        snippetEl.innerText = `const axios = require('axios');
+
+const res = await axios.post('${origin}/mail', ${JSON.stringify(payload, null, 2)}, {
+  headers: ${JSON.stringify(headers, null, 2)}
+});
+
+console.log(res.data);`;
       } else if (activeTab === 'py') {
         let pyHeaders = "{'Content-Type': 'application/json'}";
         if (data.apiKey) pyHeaders = `{'Content-Type': 'application/json', 'x-access-key': '${data.apiKey}'}`;
@@ -1245,20 +2400,79 @@ print(response.json())`;
       }
     }
 
+    function renderLiveEmailPreview() {
+      const data = getFormData();
+      const subjectBar = document.getElementById('previewSubjectBar');
+      const toBar = document.getElementById('previewToBar');
+      const previewHtml = document.getElementById('emailPreviewHtml');
+
+      if (subjectBar) subjectBar.innerText = 'Preview: ' + (data.subject || 'No Subject');
+      if (toBar) toBar.innerText = 'To: ' + (data.email || 'user@example.com');
+
+      if (previewHtml) {
+        if (data.isHtml) {
+          previewHtml.innerHTML = `
+            ${data.message}
+            <div style="margin-top: 16px; padding-top: 10px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 11px; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <img src="/logo.png" style="height: 18px; width: 18px; object-fit: cover; object-position: center 25%; border-radius: 4px;" />
+              <span>Powered by <strong style="color: #6366f1;">MailSync</strong> &bull; Open-Source Project</span>
+            </div>
+          `;
+        } else {
+          const greeting = data.name ? `<h4 style="margin: 0 0 10px 0; color: #0f172a;">Hello ${escapeHtml(data.name)},</h4>` : '';
+          const bodyParagraphs = escapeHtml(data.message)
+            .split('\n\n')
+            .map(p => `<p style="margin: 0 0 12px 0; color: #334155; line-height: 1.5;">${p.replace(/\n/g, '<br>')}</p>`)
+            .join('');
+
+          previewHtml.innerHTML = `
+            <div style="background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+              <div style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 12px 18px; color: #fff; display: flex; align-items: center; gap: 10px;">
+                <img src="/logo.png" style="width: 26px; height: 26px; object-fit: cover; object-position: center 25%; border-radius: 6px; border: 1px solid rgba(255,255,255,0.25);" />
+                <h3 style="margin: 0; font-size: 14px; font-weight: 600;">${escapeHtml(data.subject)}</h3>
+              </div>
+              <div style="padding: 18px;">
+                ${greeting}
+                ${bodyParagraphs}
+              </div>
+              <div style="background: #f8fafc; padding: 12px 18px; border-top: 1px solid #f1f5f9; text-align: center; font-size: 11px; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <img src="/logo.png" style="height: 18px; width: 18px; object-fit: cover; object-position: center 25%; border-radius: 4px;" />
+                <span>Powered by <strong style="color: #6366f1;">MailSync</strong> &bull; Open-Source Project</span>
+              </div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     async function copyAgentPrompt() {
       const data = getFormData();
       const origin = window.location.origin || 'http://localhost:5000';
       const payload = {
         email: data.email,
         name: data.name,
-        subject: data.subject,
-        message: data.message
+        subject: data.subject
       };
+      if (data.isHtml) payload.html = data.message;
+      else payload.message = data.message;
       if (data.fromName) payload.fromName = data.fromName;
+
       const promptText = buildAgentPrompt(origin, data, payload);
       const btnText = document.getElementById('copyAgentPromptBtnText');
+
       try {
         await navigator.clipboard.writeText(promptText);
+        showToast('AI Prompt Copied!', 'Ready to paste into Antigravity or Cursor', '🤖');
         if (btnText) {
           btnText.innerText = 'Prompt Copied!';
           setTimeout(() => { btnText.innerText = 'Copy AI Agent Prompt'; }, 2000);
@@ -1271,24 +2485,110 @@ print(response.json())`;
     async function copySnippet() {
       const codeText = document.getElementById('codeSnippet').innerText;
       const copyBtnText = document.getElementById('copyBtnText');
+      const copyBtnIcon = document.getElementById('copyBtnIcon');
+
       try {
         await navigator.clipboard.writeText(codeText);
+        showToast('Snippet Copied', `Copied ${activeTab.toUpperCase()} request snippet`, '📋');
         copyBtnText.innerText = 'Copied!';
-        setTimeout(() => { copyBtnText.innerText = 'Copy'; }, 2000);
+        copyBtnIcon.innerText = '✅';
+        setTimeout(() => {
+          copyBtnText.innerText = 'Copy';
+          copyBtnIcon.innerText = '📋';
+        }, 2000);
       } catch (e) {
         console.error('Failed to copy', e);
       }
     }
 
+    // Dispatch History (Saved in localStorage)
+    const HISTORY_KEY = 'mailsync_test_history_v1';
+
+    function getLocalHistory() {
+      try {
+        const stored = localStorage.getItem(HISTORY_KEY);
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveLocalHistory(item) {
+      try {
+        let history = getLocalHistory();
+        history.unshift(item);
+        if (history.length > 5) history = history.slice(0, 5);
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        renderHistoryList();
+      } catch (e) {
+        console.warn('LocalStorage unavailable', e);
+      }
+    }
+
+    function clearDispatchHistory() {
+      localStorage.removeItem(HISTORY_KEY);
+      renderHistoryList();
+      showToast('History Cleared', 'Dispatched test record reset', '🧹');
+    }
+
+    function renderHistoryList() {
+      const listEl = document.getElementById('historyList');
+      if (!listEl) return;
+      const history = getLocalHistory();
+
+      if (history.length === 0) {
+        listEl.innerHTML = `<div style="font-size: 11.5px; color: var(--text-dim); padding: 8px; text-align: center;">No test emails dispatched yet this session.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = history.map((item, index) => {
+        const isSuccess = item.status === 'success';
+        const pillClass = isSuccess ? 'history-pill-success' : 'history-pill-fail';
+        const statusLabel = isSuccess ? 'SENT (200)' : 'FAILED';
+        return `
+          <div class="history-item">
+            <div class="history-left">
+              <span class="${pillClass}">${statusLabel}</span>
+              <strong style="color: #f1f5f9;">${escapeHtml(item.to)}</strong>
+              <span style="color: var(--text-dim);">&bull; ${escapeHtml(item.subject)}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 10px; color: var(--text-dim);">${item.time}</span>
+              <button type="button" class="history-action-btn" onclick="reloadHistoryItem(${index})">Load</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function reloadHistoryItem(index) {
+      const history = getLocalHistory();
+      const item = history[index];
+      if (!item) return;
+
+      document.getElementById('testEmail').value = item.to || '';
+      document.getElementById('testSubject').value = item.subject || '';
+      if (item.name) document.getElementById('testName').value = item.name;
+      if (item.message) {
+        setMessageMode(item.isHtml ? 'html' : 'text');
+        document.getElementById('testMessage').value = item.message;
+      }
+      updateCodePreview();
+      showToast('History Item Loaded', `Loaded previous test to ${item.to}`, '🔁');
+    }
+
+    // Send Test Email Action
     async function handleSendTestMail(event) {
       event.preventDefault();
       const data = getFormData();
       const sendBtn = document.getElementById('sendBtn');
       const btnText = document.getElementById('sendBtnText');
+      const btnIcon = document.getElementById('sendBtnIcon');
       const responseBox = document.getElementById('responseBox');
 
       sendBtn.disabled = true;
-      btnText.innerText = 'Sending email...';
+      btnIcon.innerText = '⏳';
+      btnText.innerText = 'Dispatching email...';
       responseBox.className = 'response-banner';
       responseBox.style.display = 'none';
 
@@ -1300,12 +2600,20 @@ print(response.json())`;
       const reqBody = {
         email: data.email,
         name: data.name,
-        subject: data.subject,
-        message: data.message
+        subject: data.subject
       };
+
+      if (data.isHtml) {
+        reqBody.html = data.message;
+      } else {
+        reqBody.message = data.message;
+      }
+
       if (data.fromName) {
         reqBody.fromName = data.fromName;
       }
+
+      const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
       try {
         const res = await fetch('/mail', {
@@ -1318,51 +2626,136 @@ print(response.json())`;
 
         if (res.ok && json.success) {
           responseBox.className = 'response-banner success';
-          responseBox.innerHTML = `<strong>Success!</strong> ${json.message}<br><small style="color: #a7f3d0;">Message ID: ${json.messageId || 'sent'}</small>`;
+          responseBox.innerHTML = `<strong>✅ Success!</strong> ${json.message}<br><small style="color: #6ee7b7; font-family: 'JetBrains Mono', monospace;">Message ID: ${json.messageId || 'dispatched'}</small>`;
+          showToast('Email Sent!', `Dispatched to ${data.email}`, '📬');
+          saveLocalHistory({
+            status: 'success',
+            to: data.email,
+            subject: data.subject,
+            name: data.name,
+            message: data.message,
+            isHtml: data.isHtml,
+            time: nowTime
+          });
           refreshServerInfo();
         } else {
           responseBox.className = 'response-banner error';
-          responseBox.innerHTML = `<strong>Error (${res.status}):</strong> ${json.error || 'Failed'}<br><small>${json.details || json.message || ''}</small>`;
+          responseBox.innerHTML = `<strong>❌ Error (${res.status}):</strong> ${json.error || 'Failed'}<br><small>${json.details || json.message || 'Check terminal logs'}</small>`;
+          showToast('Send Failed', json.error || 'Server error', '⚠️');
+          saveLocalHistory({
+            status: 'failed',
+            to: data.email,
+            subject: data.subject,
+            name: data.name,
+            message: data.message,
+            isHtml: data.isHtml,
+            time: nowTime
+          });
         }
       } catch (err) {
         responseBox.className = 'response-banner error';
-        responseBox.innerHTML = `<strong>Network Error:</strong> ${err.message}`;
+        responseBox.innerHTML = `<strong>❌ Network Error:</strong> ${err.message}`;
+        showToast('Network Error', err.message, '⚠️');
       } finally {
         sendBtn.disabled = false;
-        btnText.innerText = 'Send Email via /mail';
+        btnIcon.innerText = '🚀';
+        btnText.innerText = 'Dispatch Email via /mail';
         refreshLogs();
       }
     }
 
-    async function verifyConnection() {
-      const verifyBtn = document.getElementById('verifyBtn');
-      verifyBtn.innerText = 'Verifying...';
-      try {
-        const res = await fetch('/api/verify');
-        const json = await res.json();
-        if (res.ok && json.success) {
-          alert('Transporter verified successfully! Nodemailer is connected to your email provider.');
-        } else {
-          alert('Verification Failed:\n' + (json.details || json.error || 'Check server logs.'));
-        }
-      } catch (err) {
-        alert('Could not reach server: ' + err.message);
-      } finally {
-        verifyBtn.innerText = 'Test Transporter';
+    // Diagnostic Modal & Verification
+    function openTransporterModal() {
+      const modal = document.getElementById('transporterModal');
+      modal.classList.add('open');
+      populateModalFromCache();
+    }
+
+    function closeTransporterModal() {
+      const modal = document.getElementById('transporterModal');
+      modal.classList.remove('open');
+    }
+
+    function closeTransporterModalOnBackdrop(event) {
+      if (event.target === document.getElementById('transporterModal')) {
+        closeTransporterModal();
       }
     }
 
+    function populateModalFromCache() {
+      if (!cachedServerInfo) return;
+      document.getElementById('modalService').innerText = cachedServerInfo.emailService || 'Gmail (SMTP)';
+      document.getElementById('modalUser').innerText = cachedServerInfo.maskedUser || '(EMAIL_USER not set)';
+      document.getElementById('modalFromName').innerText = cachedServerInfo.fromName || 'MailSync';
+      document.getElementById('modalAuth').innerText = cachedServerInfo.authRequired ? '🔒 Key Protected' : '🔓 Public (Open)';
+      document.getElementById('modalAuth').style.color = cachedServerInfo.authRequired ? '#a855f7' : '#10b981';
+    }
+
+    async function runTransporterVerification() {
+      const btn = document.getElementById('modalVerifyBtn');
+      const resultBox = document.getElementById('modalVerifyResult');
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span> Testing Connection...';
+      resultBox.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/verify');
+        const json = await res.json();
+        resultBox.style.display = 'block';
+
+        if (res.ok && json.success) {
+          resultBox.style.background = 'rgba(16, 185, 129, 0.12)';
+          resultBox.style.border = '1px solid rgba(16, 185, 129, 0.35)';
+          resultBox.style.color = '#6ee7b7';
+          resultBox.innerHTML = `<strong>✅ Verification Passed!</strong><br>${json.message}`;
+          showToast('Transporter Verified', 'SMTP connection active and responsive', '📡');
+        } else {
+          resultBox.style.background = 'rgba(244, 63, 94, 0.12)';
+          resultBox.style.border = '1px solid rgba(244, 63, 94, 0.35)';
+          resultBox.style.color = '#fda4af';
+          resultBox.innerHTML = `<strong>⚠️ Verification Notice:</strong><br>${json.details || json.error || 'Check environment variables (EMAIL_USER & EMAIL_PASSWORD).'}`;
+          showToast('Verification Notice', 'Transporter not fully authenticated', 'ℹ️');
+        }
+      } catch (err) {
+        resultBox.style.display = 'block';
+        resultBox.style.background = 'rgba(244, 63, 94, 0.12)';
+        resultBox.style.color = '#fda4af';
+        resultBox.innerHTML = `<strong>Network Error:</strong> ${err.message}`;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>⚡</span> Re-test Connection';
+      }
+    }
+
+    // Background Diagnostics and Server Info Refresh
     async function refreshServerInfo() {
       try {
         const res = await fetch('/server-info');
         if (res.ok) {
           const data = await res.json();
+          cachedServerInfo = data;
+
           document.getElementById('statUptime').innerText = data.uptime || '--';
           document.getElementById('statMailHits').innerText = data.endpointHitCounts?.mail ?? 0;
-          document.getElementById('statAuth').innerText = data.authRequired ? '🔒 Key Protected' : '🔓 Public (Open)';
-          if (data.smtpConfigured) {
-            document.getElementById('systemStatusText').innerText = 'Ready to Send';
+
+          const authEl = document.getElementById('statAuth');
+          const authSubEl = document.getElementById('statAuthSub');
+          if (data.authRequired) {
+            authEl.innerHTML = '<span style="color: #a855f7;">🔒 Protected</span>';
+            authSubEl.innerHTML = '<span>●</span> Requires x-access-key';
+          } else {
+            authEl.innerHTML = '<span style="color: #34d399;">🔓 Public</span>';
+            authSubEl.innerHTML = '<span>●</span> Direct API access enabled';
           }
+
+          const badgeText = document.getElementById('systemStatusText');
+          if (data.smtpConfigured) {
+            badgeText.innerText = 'Ready to Send';
+          } else {
+            badgeText.innerText = 'Operational';
+          }
+
+          populateModalFromCache();
         }
       } catch (e) {
         console.warn('Could not refresh server info', e);
@@ -1376,10 +2769,15 @@ print(response.json())`;
           const data = await res.json();
           const viewer = document.getElementById('logsViewer');
           if (data.logs && data.logs.length > 0) {
-            viewer.innerText = data.logs.slice(-15).join('\n');
+            const formatted = data.logs.slice(-25).map(log => {
+              if (log.includes('[ERROR]')) return `<span class="log-line-error">${escapeHtml(log)}</span>`;
+              if (log.includes('[WARN]')) return `<span class="log-line-warn">${escapeHtml(log)}</span>`;
+              return `<span class="log-line-info">${escapeHtml(log)}</span>`;
+            }).join('\n');
+            viewer.innerHTML = formatted;
             viewer.scrollTop = viewer.scrollHeight;
           } else {
-            viewer.innerText = 'No logs recorded yet. Requests will appear here in real-time.';
+            viewer.innerHTML = '<span style="color: #64748b;">No recent logs recorded. Dispatches will stream here in real-time.</span>';
           }
         }
       } catch (e) {
@@ -1387,11 +2785,22 @@ print(response.json())`;
       }
     }
 
+    function clearLogsViewer() {
+      const viewer = document.getElementById('logsViewer');
+      viewer.innerHTML = '<span style="color: #64748b;">Viewer cleared. New logs will appear on next request.</span>';
+      showToast('Logs Cleared', 'Viewer screen reset', '🧹');
+    }
+
+    // Document Init
     document.addEventListener('DOMContentLoaded', () => {
       updateCodePreview();
+      renderHistoryList();
       refreshServerInfo();
       refreshLogs();
+
+      // Periodic Auto Refresh (Non-intrusive)
       setInterval(refreshServerInfo, 10000);
+      autoLogInterval = setInterval(refreshLogs, 4000);
     });
   </script>
 </body>

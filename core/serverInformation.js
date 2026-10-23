@@ -19,6 +19,11 @@ router.get("/", (req, res) => {
     currentTime: new Date().toISOString(),
     smtpConfigured: Boolean(config.emailUser && config.emailPassword),
     authRequired: Boolean(config.accessKey),
+    emailService: config.emailService || "smtp",
+    fromName: config.fromName,
+    maskedUser: config.emailUser
+      ? config.emailUser.replace(/(.{2})(.*)(@.*)/, "$1***$3")
+      : null,
     endpointHitCounts,
   });
 });
