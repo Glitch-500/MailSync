@@ -106,12 +106,15 @@ POST /mail
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `email` or `to` | `string` | **Yes** | Target recipient email address |
-| `message` | `string` | **Yes\*** | Email body text (auto-wrapped in clean HTML layout) |
+| `message` | `string` | **Yes\*** | Email body text (auto-wrapped in clean HTML layout with watermark) |
 | `html` | `string` | No\* | Custom HTML body if you want full layout control |
 | `subject` | `string` | No | Email subject line (default: "New Notification from MailSync") |
 | `name` | `string` | No | Personalizes the greeting (e.g., "Hello Alex,") |
+| `fromName` | `string` | No | Custom sender/from name (e.g., "Acme Team"). Overrides `FROM_NAME`. |
+| `from` | `string` | No | Full custom sender header (e.g. `"Acme" <support@domain.com>`) |
 
 *\* Either `message` or `html` must be provided.*
+*🛡️ Note: All emails include an open-source watermark badge ("⚡ Powered by MailSync • Open Source Project") in the footer.*
 
 #### Response
 ```json
@@ -197,8 +200,9 @@ print(response.json())
 |---|---|---|
 | `EMAIL_USER` | *None* | Email address used for authentication (e.g. Gmail) |
 | `EMAIL_PASSWORD` | *None* | Email password or Google App Password |
+| `FROM_NAME` | `"MailSync"` | Default sender/from name (e.g. `"MyBrand"`, `"Acme Support"`) |
 | `EMAIL_SERVICE` | `gmail` | Nodemailer service provider (`gmail`, `sendgrid`, `mailgun`, etc.) |
-| `EMAIL_FROM` | `"MailSync" <EMAIL_USER>` | Custom sender header (e.g. `"Support" <help@domain.com>`) |
+| `EMAIL_FROM` | `"${FROM_NAME}" <EMAIL_USER>` | Full custom sender header (overrides `FROM_NAME`) |
 | `ACCESS_KEY` | *None* | Secret key required to send emails. If empty, the endpoint is public. |
 | `PORT` | `5000` | Port for the standalone Node.js server |
 

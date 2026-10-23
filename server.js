@@ -67,7 +67,7 @@ app.get("/api/verify", async (req, res) => {
 const handleSendMail = async (req, res) => {
   endpointHitCounts.mail++;
 
-  const { email, to, name, subject, message, html } = req.body;
+  const { email, to, name, fromName, from, subject, message, html } = req.body;
   const recipient = email || to;
 
   if (!recipient) {
@@ -97,6 +97,8 @@ const handleSendMail = async (req, res) => {
     const info = await sendMail({
       email: recipient,
       name,
+      fromName,
+      from,
       subject,
       message,
       html,
