@@ -197,6 +197,45 @@ print(response.json())
 
 ---
 
+## 🤖 AI Agent Integration & Guided Prompt
+
+Integrate your hosted MailSync instance into **any** application (Next.js, Node.js, Python, React, Go) in seconds using an AI coding assistant (**Cursor, Antigravity, Claude Code, Copilot, or Windsurf**).
+
+### 📋 1-Click Agent Prompt
+Copy and paste this prompt directly into your AI assistant:
+
+```markdown
+Please implement transactional email sending in this application using our hosted MailSync API instance.
+
+### MailSync Instance Details:
+- Base API URL: https://your-mailsync.vercel.app (or https://mailsync-sigma.vercel.app)
+- Endpoint: POST /mail (or POST /api/mail)
+- Headers:
+  - Content-Type: application/json
+  - x-access-key: [YOUR_ACCESS_KEY or none if public]
+
+### Request Body Schema (JSON):
+{
+  "email": "user@example.com",
+  "name": "Alex",
+  "subject": "Order Confirmation",
+  "message": "Thank you for your purchase!"
+}
+
+### Steps for the Agent:
+1. Environment Setup: Add `MAILSYNC_API_URL` (and optional `MAILSYNC_ACCESS_KEY`) to `.env`.
+2. Client Service: Create a clean email utility module (e.g., `lib/mailsync.ts` or `services/email.ts`) that POSTs to `/mail`.
+3. Wire Feature: Connect the utility to our user-facing triggers (contact form, verification, or notification).
+4. Verify: Test against `GET /health` and dispatch a test email.
+```
+
+### ⚡ Antigravity Agent Skill
+If using the **Antigravity IDE** or `agy` CLI, copy the included skill from [`.agents/skills/mailsync-integration/`](.agents/skills/mailsync-integration/SKILL.md) to your application's `.agents/skills/` directory. The agent will automatically detect and apply all best practices.
+
+See [INTEGRATION_PROMPT.md](INTEGRATION_PROMPT.md) for full documentation and framework examples.
+
+---
+
 ## ⚙️ Environment Variables
 
 | Variable | Default | Description |

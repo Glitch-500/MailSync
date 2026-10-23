@@ -908,6 +908,7 @@
             <button class="tab-btn" id="tabJs" onclick="switchTab('js')">JavaScript (Fetch)</button>
             <button class="tab-btn" id="tabPy" onclick="switchTab('py')">Python</button>
             <button class="tab-btn" id="tabJson" onclick="switchTab('json')">JSON Payload</button>
+            <button class="tab-btn" id="tabAgent" onclick="switchTab('agent')">🤖 AI Prompt</button>
           </div>
           <button class="copy-btn" id="copyCodeBtn" onclick="copySnippet()">
             <span>📋</span> <span id="copyBtnText">Copy</span>
@@ -1077,6 +1078,37 @@
       </div>
     </section>
 
+    <!-- AI Agent & Guided Integration Section -->
+    <section style="margin-bottom: 45px;" id="ai-agent-guide">
+      <div class="section-header">
+        <h2 class="section-title">🤖 AI Agent Integration (Antigravity, Cursor, Claude, Copilot)</h2>
+        <p class="section-subtitle">Instruct an AI coding agent to integrate this hosted MailSync instance into your application in seconds.</p>
+      </div>
+
+      <div class="card" style="border: 1px solid rgba(99, 102, 241, 0.35); background: linear-gradient(180deg, rgba(30, 27, 75, 0.35) 0%, rgba(17, 24, 39, 0.75) 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+              <span>⚡</span> 1-Click AI Assistant Prompt
+            </h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+              Copy this pre-configured prompt directly into Cursor, Antigravity, Claude Code, or GitHub Copilot to implement email delivery in your project.
+            </p>
+          </div>
+          <button class="btn-primary" onclick="copyAgentPrompt()" style="width: auto; padding: 8px 16px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
+            <span>📋</span> <span id="copyAgentPromptBtnText">Copy AI Agent Prompt</span>
+          </button>
+        </div>
+        <div class="code-container" style="max-height: 220px; overflow-y: auto;">
+          <pre id="agentPromptPreview" style="font-size: 12px; white-space: pre-wrap; color: #cbd5e1;"></pre>
+        </div>
+        <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--text-muted);">
+          <span>📦 Includes pre-built Antigravity workspace skill at <code style="color: #a5b4fc;">.agents/skills/mailsync-integration</code></span>
+          <a href="https://github.com/Harshit-Maurya838/MailSync/blob/main/INTEGRATION_PROMPT.md" target="_blank" style="color: #818cf8; text-decoration: none; font-weight: 600;">View Full Agent Guide &rarr;</a>
+        </div>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer>
       <p>
@@ -1114,6 +1146,41 @@
       };
     }
 
+    function buildAgentPrompt(origin, data, payload) {
+      const authHeaderLine = data.apiKey
+        ? `- x-access-key: ${data.apiKey}`
+        : `- x-access-key: (none configured on this instance)`;
+
+      const envKeyLine = data.apiKey
+        ? `MAILSYNC_ACCESS_KEY=${data.apiKey}`
+        : `# MAILSYNC_ACCESS_KEY=your-access-key (if authentication enabled)`;
+
+      return `Please implement transactional email sending in this application using our hosted MailSync API instance.
+
+### MailSync Instance Details:
+- Base API URL: ${origin}
+- Endpoint: POST /mail (or POST /api/mail)
+- Headers:
+  - Content-Type: application/json
+  ${authHeaderLine}
+
+### Payload Schema (JSON):
+${JSON.stringify(payload, null, 2)}
+
+### Implementation Instructions for the Agent:
+1. Environment Setup:
+   - Add MAILSYNC_API_URL=${origin} to .env (and .env.example / .env.local).
+   - ${envKeyLine}
+2. Email Client Service:
+   - Create a clean helper module (e.g. lib/mailsync.ts, services/email.ts, or utils/mailer.py).
+   - Implement POST requests to \`\${MAILSYNC_API_URL}/mail\` with proper timeout, json body parsing, and error handling.
+   - Keep API keys strictly server-side (never leak into client-side JS bundles).
+3. Connect Email Feature:
+   - Wire the mail service into user-facing triggers (e.g., contact form, OTP, notifications, or welcome emails).
+4. Verify:
+   - Confirm connectivity with GET ${origin}/health and dispatch a test email.`;
+    }
+
     function updateCodePreview() {
       const data = getFormData();
       const origin = window.location.origin || 'http://localhost:5000';
@@ -1128,6 +1195,12 @@
 
       if (data.fromName) {
         payload.fromName = data.fromName;
+      }
+
+      const agentPrompt = buildAgentPrompt(origin, data, payload);
+      const agentPreviewEl = document.getElementById('agentPromptPreview');
+      if (agentPreviewEl) {
+        agentPreviewEl.innerText = agentPrompt;
       }
 
       if (activeTab === 'curl') {
@@ -1159,6 +1232,31 @@ response = requests.post(url, json=payload, headers=headers)
 print(response.json())`;
       } else if (activeTab === 'json') {
         snippetEl.innerText = JSON.stringify(payload, null, 2);
+      } else if (activeTab === 'agent') {
+        snippetEl.innerText = agentPrompt;
+      }
+    }
+
+    async function copyAgentPrompt() {
+      const data = getFormData();
+      const origin = window.location.origin || 'http://localhost:5000';
+      const payload = {
+        email: data.email,
+        name: data.name,
+        subject: data.subject,
+        message: data.message
+      };
+      if (data.fromName) payload.fromName = data.fromName;
+      const promptText = buildAgentPrompt(origin, data, payload);
+      const btnText = document.getElementById('copyAgentPromptBtnText');
+      try {
+        await navigator.clipboard.writeText(promptText);
+        if (btnText) {
+          btnText.innerText = 'Prompt Copied!';
+          setTimeout(() => { btnText.innerText = 'Copy AI Agent Prompt'; }, 2000);
+        }
+      } catch (e) {
+        console.error('Failed to copy', e);
       }
     }
 
