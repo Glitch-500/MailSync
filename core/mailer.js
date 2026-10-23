@@ -24,7 +24,7 @@ function getTransporter() {
  */
 const WATERMARK_HTML = `
   <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e7eb; text-align: center;">
-    <a href="https://github.com/your-username/mailsync" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 11.5px; font-weight: 600; color: #475569; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+    <a href="https://github.com/Harshit-Maurya838/MailSync" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 11.5px; font-weight: 600; color: #475569; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
       ⚡ Powered by <span style="color: #6366f1; font-weight: 700; text-decoration: underline;">MailSync</span> &bull; Open Source Project
     </a>
   </div>

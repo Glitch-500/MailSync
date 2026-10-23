@@ -46,8 +46,8 @@ Netlify is supported via the included `netlify.toml` and serverless function ada
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/mailsync.git
-   cd mailsync
+   git clone https://github.com/Harshit-Maurya838/MailSync.git
+   cd MailSync
    ```
 
 2. **Install dependencies:**
@@ -224,6 +224,12 @@ Or with Docker Compose:
 ```bash
 docker-compose up -d
 ```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome and greatly appreciated! Please review our [Contributing Guide](CONTRIBUTING.md) to get started with local development, architecture overview, commit conventions, and pull requests.
 
 ---
 

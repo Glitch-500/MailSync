@@ -21,6 +21,14 @@
   ],
   "author": "MailSync Contributors",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Harshit-Maurya838/MailSync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Harshit-Maurya838/MailSync/issues"
+  },
+  "homepage": "https://github.com/Harshit-Maurya838/MailSync#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^18.0.9",
