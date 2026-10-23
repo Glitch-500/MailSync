@@ -908,7 +908,7 @@
             <button class="tab-btn" id="tabJs" onclick="switchTab('js')">JavaScript (Fetch)</button>
             <button class="tab-btn" id="tabPy" onclick="switchTab('py')">Python</button>
             <button class="tab-btn" id="tabJson" onclick="switchTab('json')">JSON Payload</button>
-            <button class="tab-btn" id="tabAgent" onclick="switchTab('agent')">🤖 AI Prompt</button>
+            <button class="tab-btn" id="tabAgent" onclick="switchTab('agent')">AI Prompt</button>
           </div>
           <button class="copy-btn" id="copyCodeBtn" onclick="copySnippet()">
             <span>📋</span> <span id="copyBtnText">Copy</span>
@@ -1082,29 +1082,37 @@
     <section style="margin-bottom: 45px;" id="ai-agent-guide">
       <div class="section-header">
         <h2 class="section-title">🤖 AI Agent Integration (Antigravity, Cursor, Claude, Copilot)</h2>
-        <p class="section-subtitle">Instruct an AI coding agent to integrate this hosted MailSync instance into your application in seconds.</p>
+        <p class="section-subtitle">Instruct an AI coding agent to integrate this hosted MailSync instance into your
+          application in seconds.</p>
       </div>
 
-      <div class="card" style="border: 1px solid rgba(99, 102, 241, 0.35); background: linear-gradient(180deg, rgba(30, 27, 75, 0.35) 0%, rgba(17, 24, 39, 0.75) 100%);">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+      <div class="card"
+        style="border: 1px solid rgba(99, 102, 241, 0.35); background: linear-gradient(180deg, rgba(30, 27, 75, 0.35) 0%, rgba(17, 24, 39, 0.75) 100%);">
+        <div
+          style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
           <div>
             <h3 style="font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
               <span>⚡</span> 1-Click AI Assistant Prompt
             </h3>
             <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
-              Copy this pre-configured prompt directly into Cursor, Antigravity, Claude Code, or GitHub Copilot to implement email delivery in your project.
+              Copy this pre-configured prompt directly into Cursor, Antigravity, Claude Code, or GitHub Copilot to
+              implement email delivery in your project.
             </p>
           </div>
-          <button class="btn-primary" onclick="copyAgentPrompt()" style="width: auto; padding: 8px 16px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
+          <button class="btn-primary" onclick="copyAgentPrompt()"
+            style="width: auto; padding: 8px 16px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
             <span>📋</span> <span id="copyAgentPromptBtnText">Copy AI Agent Prompt</span>
           </button>
         </div>
         <div class="code-container" style="max-height: 220px; overflow-y: auto;">
           <pre id="agentPromptPreview" style="font-size: 12px; white-space: pre-wrap; color: #cbd5e1;"></pre>
         </div>
-        <div style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--text-muted);">
-          <span>📦 Includes pre-built Antigravity workspace skill at <code style="color: #a5b4fc;">.agents/skills/mailsync-integration</code></span>
-          <a href="https://github.com/Harshit-Maurya838/MailSync/blob/main/INTEGRATION_PROMPT.md" target="_blank" style="color: #818cf8; text-decoration: none; font-weight: 600;">View Full Agent Guide &rarr;</a>
+        <div
+          style="margin-top: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--text-muted);">
+          <span>📦 Includes pre-built Antigravity workspace skill at <code
+              style="color: #a5b4fc;">.agents/skills/mailsync-integration</code></span>
+          <a href="https://github.com/Harshit-Maurya838/MailSync/blob/main/INTEGRATION_PROMPT.md" target="_blank"
+            style="color: #818cf8; text-decoration: none; font-weight: 600;">View Full Agent Guide &rarr;</a>
         </div>
       </div>
     </section>
